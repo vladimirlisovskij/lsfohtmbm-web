@@ -42,7 +42,6 @@ header nav a.active {
 }
 
 .articleName {
-    text-transform: capitalize;
     font-family: sans-serif;
     color: black;
     font-size: 32px;
@@ -51,7 +50,6 @@ header nav a.active {
 }
 
 .articleDate {
-    text-transform: capitalize;
     font-family: sans-serif;
     color: black;
     font-size: 18px;
@@ -60,7 +58,6 @@ header nav a.active {
 }
 
 .primaryHeader {
-    text-transform: capitalize;
     font-family: sans-serif;
     color: black;
     font-size: 28px;
@@ -69,7 +66,6 @@ header nav a.active {
 }
 
 .secondaryHeader {
-    text-transform: capitalize;
     font-family: sans-serif;
     color: black;
     font-size: 24px;
@@ -78,7 +74,6 @@ header nav a.active {
 }
 
 .defaultText {
-    text-transform: capitalize;
     font-family: sans-serif;
     color: black;
     font-size: 18px;
@@ -87,7 +82,6 @@ header nav a.active {
 }
 
 .description {
-    text-transform: capitalize;
     font-family: sans-serif;
     color: gray;
     font-size: 18px;

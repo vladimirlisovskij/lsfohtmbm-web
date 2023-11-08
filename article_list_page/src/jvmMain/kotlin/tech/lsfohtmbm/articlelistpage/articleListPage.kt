@@ -6,7 +6,7 @@ import tech.lsfohtmbm.design.defaultPage
 import tech.lsfohtmbm.design.elements.preview
 
 fun HTML.articleListPage(previews: List<ArticlePreview>) {
-    defaultPage("Список") {
+    defaultPage("Блог") {
         previews.forEach { preview ->
             preview(
                 name = preview.title,

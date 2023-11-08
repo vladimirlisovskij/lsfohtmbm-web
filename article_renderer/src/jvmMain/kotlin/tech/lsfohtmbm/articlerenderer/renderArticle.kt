@@ -14,7 +14,7 @@ fun HTML.renderArticle(article: Article) {
                 ParagraphType.PRIMARY_HEADER -> primaryHeader(it.value)
                 ParagraphType.SECONDARY_HEADER -> secondaryHeader(it.value)
                 ParagraphType.TEXT -> defaultText(it.value)
-                ParagraphType.IMAGE -> picture(it.value, null)
+                ParagraphType.IMAGE -> articlePicture(it.value)
                 ParagraphType.DESCRIPTION -> description(it.value)
             }
         }

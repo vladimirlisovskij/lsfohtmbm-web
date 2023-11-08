@@ -43,6 +43,22 @@ class Server(
                     }
                 }
 
+                get("/image/{id}") {
+                    val image = call.parameters["id"]
+                        ?.toLongOrNull()
+                        ?.let { dataBaseSource.getArticleImage(it) }
+
+                    if (image != null) {
+                        call.respondBytes(
+                            image,
+                            ContentType.parse("image/webp"),
+                            HttpStatusCode.OK
+                        )
+                    } else {
+                        call.respond(HttpStatusCode.NotFound)
+                    }
+                }
+
                 staticResources("/static", null)
             }
         }.start(wait = true)

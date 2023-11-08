@@ -5,10 +5,10 @@ import tech.lsfohtmbm.databasesource.api.DataBaseSource
 import tech.lsfohtmbm.databasesource.impl.mapper.DateMapper
 import tech.lsfohtmbm.databasesource.impl.mapper.ParagraphMapper
 
-fun createDataBaseSource(): DataBaseSource {
+fun createDataBaseSource(path: String): DataBaseSource {
     return DataBaseSourceImpl(
         ioDispatcher = Dispatchers.IO,
-        database = createDatabase(),
+        database = createDatabase(path),
         paragraphMapper = ParagraphMapper(),
         dateMapper = DateMapper()
     )

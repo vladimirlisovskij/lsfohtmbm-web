@@ -7,9 +7,15 @@ import tech.lsfohtmbm.mainpage.mainPage
 import tech.lsfohtmbm.articlelistpage.articleListPage
 import tech.lsfohtmbm.articlerenderer.renderArticle
 
-fun main() {
+private const val ARG_DATABASE_PATH = "--database"
+
+fun main(arguments: Array<String>) {
+    val (_, dataBasePath) = arguments
+        .first { it.startsWith(ARG_DATABASE_PATH) }
+        .split("=")
+
     Server(
-        createDataBaseSource(),
+        createDataBaseSource(dataBasePath),
         HTML::mainPage,
         HTML::articleListPage,
         HTML::renderArticle

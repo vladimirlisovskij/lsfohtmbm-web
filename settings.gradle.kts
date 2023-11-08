@@ -22,10 +22,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "blog"
 
+include(":app")
 include(":server")
 include(":design")
 include(":main_page")
-include(":page_renderer")
+include(":article_list_page")
+include(":article_renderer")
 include(":article")
-include(":article_repository_api")
-include(":article_repository_impl")
+include(":database_source_api")
+include(":database_source_impl")

@@ -14,7 +14,7 @@ fun FlowContent.topBar() {
 
         nav {
             topBarSegment("/", "Главная")
-            topBarSegment("/blog", "Блог")
+            topBarSegment("/articles", "Блог")
             topBarSegment("/blog", "GitHub")
         }
     }

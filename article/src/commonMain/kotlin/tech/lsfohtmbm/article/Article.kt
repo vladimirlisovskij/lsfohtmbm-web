@@ -1,13 +1,33 @@
 package tech.lsfohtmbm.article
 
-data class Article(val title: String, val paragraphs: List<Paragraph>)
+data class Article(
+    val id: Long,
+    val title: String,
+    val date: DateWrapper,
+    val paragraphs: List<Paragraph>
+)
 
-sealed interface Paragraph
+data class ArticlePreview(
+    val id: Long,
+    val title: String,
+    val date: DateWrapper
+)
 
-data class PrimaryHeader(val header: String) : Paragraph
+data class DateWrapper(
+    val day: Int,
+    val month: Int,
+    val year: Int
+)
 
-data class SecondaryHeader(val header: String) : Paragraph
+enum class ParagraphType {
+    PRIMARY_HEADER,
+    SECONDARY_HEADER,
+    TEXT,
+    IMAGE,
+    DESCRIPTION
+}
 
-data class Text(val text: String) : Paragraph
-
-data class Image(val id: Int, val description: String) : Paragraph
+class Paragraph(
+    val type: ParagraphType,
+    val value: String
+)

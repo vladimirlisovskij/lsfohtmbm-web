@@ -14,7 +14,7 @@ header {
 
 header p {
     text-transform: uppercase;
-    font-family: sans;
+    font-family: serif;
     color: black;
     font-size: 34px;
 }
@@ -23,7 +23,7 @@ header nav a {
     display:inline-block;
     font-family: sans-serif;
     padding: 16px;
-    font-size: 17px;
+    font-size: 16px;
     color: black;
     text-decoration: none;
 }
@@ -39,12 +39,63 @@ header nav a.active {
     display:block;
     margin-left:auto;
     margin-right:auto;
-    border-color: rgba(0, 0, 0, 0.25);
+}
+
+.articleName {
+    text-transform: capitalize;
+    font-family: sans-serif;
+    color: black;
+    font-size: 32px;
+    text-indent: 18px;
+    text-align: justify;
+}
+
+.articleDate {
+    text-transform: capitalize;
+    font-family: sans-serif;
+    color: black;
+    font-size: 18px;
+    text-indent: 18px;
+    text-align: justify;
 }
 
 .primaryHeader {
     text-transform: capitalize;
-    font-family: sans;
+    font-family: sans-serif;
+    color: black;
+    font-size: 28px;
+    text-indent: 18px;
+    text-align: justify;
+}
+
+.secondaryHeader {
+    text-transform: capitalize;
+    font-family: sans-serif;
     color: black;
     font-size: 24px;
+    text-indent: 18px;
+    text-align: justify;
+}
+
+.defaultText {
+    text-transform: capitalize;
+    font-family: sans-serif;
+    color: black;
+    font-size: 18px;
+    text-indent: 18px;
+    text-align: justify;
+}
+
+.description {
+    text-transform: capitalize;
+    font-family: sans-serif;
+    color: gray;
+    font-size: 18px;
+    text-align: center;
+}
+
+.preview {
+    font-size: 18px;
+    color: black;
+    text-decoration: none;
 }

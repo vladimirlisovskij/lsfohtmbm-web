@@ -1,0 +1,10 @@
+CREATE TABLE images (
+	id INTEGER NOT NULL,
+	image BLOB NOT NULL,
+	PRIMARY KEY(id)
+);
+
+get:
+SELECT image FROM images
+WHERE id = ?
+LIMIT 1;

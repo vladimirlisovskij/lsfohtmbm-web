@@ -12,6 +12,8 @@ private const val ARG_HOST = "--host"
 private const val ARG_PORT = "--port"
 
 fun main(arguments: Array<String>) {
+    println(arguments.joinToString(separator = "+"))
+
     val (_, dataBasePath) = arguments
         .first { it.startsWith(ARG_DATABASE_PATH) }
         .split("=")

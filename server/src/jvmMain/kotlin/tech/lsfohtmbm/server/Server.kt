@@ -17,10 +17,12 @@ class Server(
     private val dataBaseSource: DataBaseSource,
     private val mainPage: HTML.() -> Unit,
     private val articlesListPage: HTML.(List<ArticlePreview>) -> Unit,
-    private val articleRenderer: HTML.(Article) -> Unit
+    private val articleRenderer: HTML.(Article) -> Unit,
+    private val host: String,
+    private val port: Int
 ) {
     fun run() {
-        embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
+        embeddedServer(Netty, port = port, host = host) {
             routing {
                 get("/") {
                     call.respondHtml(HttpStatusCode.OK, mainPage)

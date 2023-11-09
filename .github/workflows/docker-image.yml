@@ -14,11 +14,11 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
 
-    - name: gradlew build
+    - name: Create distribution tar archive
       run: ./gradlew :app:distTar
 
-    - name: extract build tar
-      run: tar -xvf app.tar
+    - name: Extract distribution files
+      run: tar -xvf ./app/distributions/app.tar
       shell: bash
 
     - name: Build the Docker image

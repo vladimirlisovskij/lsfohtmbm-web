@@ -18,7 +18,7 @@ jobs:
       run: ./gradlew :app:distTar
 
     - name: Extract distribution files
-      run: tar -xvf ./app/build/distributions/app.tar
+      run: tar -xvf ./app/build/distributions/app.tar -C ./app/build/distributions
       shell: bash
 
     - name: Build the Docker image

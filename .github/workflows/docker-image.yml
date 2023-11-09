@@ -15,7 +15,11 @@ jobs:
       uses: gradle/gradle-build-action@v2
 
     - name: gradlew build
-      run: ./gradlew build
+      run: ./gradlew :app:distTar
 
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    - name: extract build tar
+      run: tar -xvf app.tar
+      shell: bash
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag lsfohtmbm-web:$(date +%s)

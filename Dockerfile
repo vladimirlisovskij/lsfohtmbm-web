@@ -1,3 +1,3 @@
 FROM ubuntu:22.04
-COPY ./app/build/distributions/app /app
-RUN /app/app
+ADD ./app/build/distributions/app.tar /app
+RUN /app/bin/app

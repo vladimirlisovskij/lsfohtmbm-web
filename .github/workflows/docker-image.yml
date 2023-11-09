@@ -17,9 +17,9 @@ jobs:
     - name: Create distribution tar archive
       run: ./gradlew :app:distTar
 
-#    - name: Extract distribution files
-#      run: tar -xvf ./app/build/distributions/app.tar
-#      shell: bash
+    - name: Extract distribution files
+      run: tar -xvf ./app/build/distributions/app.tar
+      shell: bash
 
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag lsfohtmbm-web:$(date +%s)

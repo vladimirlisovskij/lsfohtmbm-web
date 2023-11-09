@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "application_arguments" ]
 
 jobs:
   build:
@@ -33,4 +33,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-web:v1
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-web:latest

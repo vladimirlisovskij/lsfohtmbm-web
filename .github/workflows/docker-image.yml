@@ -34,4 +34,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-web:${{ github.ref }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-web:${{ github.event.release.tag_name }}

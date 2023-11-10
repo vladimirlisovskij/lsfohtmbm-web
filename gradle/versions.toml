@@ -10,6 +10,7 @@ sqldelight = "2.1.0-SNAPSHOT"
 ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-html = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
+ktor-server-ssl = { module = "io.ktor:ktor-network-tls-certificates", version.ref = "ktor" }
 
 kotlin-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "kotlin-html" }
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }

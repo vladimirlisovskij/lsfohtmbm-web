@@ -12,57 +12,115 @@ import kotlinx.html.HTML
 import tech.lsfohtmbm.article.Article
 import tech.lsfohtmbm.article.ArticlePreview
 import tech.lsfohtmbm.databasesource.api.DataBaseSource
+import java.io.File
+import java.io.FileInputStream
+import java.security.KeyStore
 
-class Server(
-    private val dataBaseSource: DataBaseSource,
-    private val mainPage: HTML.() -> Unit,
-    private val articlesListPage: HTML.(List<ArticlePreview>) -> Unit,
-    private val articleRenderer: HTML.(Article) -> Unit,
-    private val host: String,
-    private val port: Int
+class HostConfig(
+    val host: String,
+    val defaultPort: Int,
+    val sslPort: Int,
+    val keyStore: String,
+    val keyStorePassword: String,
+    val keyAlias: String,
+    val privateKeyPassword: String
+)
+
+class PageConfig(
+    val mainPage: HTML.() -> Unit,
+    val articlesListPage: HTML.(List<ArticlePreview>) -> Unit,
+    val articleRenderer: HTML.(Article) -> Unit,
+)
+
+fun runServer(
+    dataBaseSource: DataBaseSource,
+    pageConfig: PageConfig,
+    hostConfig: HostConfig
 ) {
-    fun run() {
-        embeddedServer(Netty, port = port, host = host) {
-            routing {
-                get("/") {
-                    call.respondHtml(HttpStatusCode.OK, mainPage)
-                }
+    embeddedServer(
+        Netty,
+        applicationEngineEnvironment {
+            configureEnvironment(dataBaseSource, pageConfig, hostConfig)
+        }
+    ).start(wait = true)
+}
 
-                get("/articles") {
-                    val articles = dataBaseSource.getArticlePreviews()
-                    call.respondHtml(HttpStatusCode.OK) { articlesListPage(articles) }
-                }
+private fun KeyStore.load(file: File, password: CharArray) {
+    FileInputStream(file).use { load(it, password) }
+}
 
-                get("/article/{id}") {
-                    val article = call.parameters["id"]
-                        ?.toLongOrNull()
-                        ?.let { dataBaseSource.getArticle(it) }
+private fun ApplicationEngineEnvironmentBuilder.configureEnvironment(
+    dataBaseSource: DataBaseSource,
+    pageConfig: PageConfig,
+    hostConfig: HostConfig
+) {
+    val keyStoreFile = File(hostConfig.keyStore)
 
-                    if (article != null) {
-                        call.respondHtml(HttpStatusCode.OK) { articleRenderer(article) }
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
-                    }
-                }
+    val keyStore = KeyStore
+        .getInstance("JKS")
+        .apply { load(keyStoreFile, hostConfig.keyStorePassword.toCharArray()) }
 
-                get("/image/{id}") {
-                    val image = call.parameters["id"]
-                        ?.toLongOrNull()
-                        ?.let { dataBaseSource.getArticleImage(it) }
+    connector {
+        port = hostConfig.defaultPort
+        host = hostConfig.host
+    }
 
-                    if (image != null) {
-                        call.respondBytes(
-                            image,
-                            ContentType.parse("image/webp"),
-                            HttpStatusCode.OK
-                        )
-                    } else {
-                        call.respond(HttpStatusCode.NotFound)
-                    }
-                }
+    sslConnector(
+        keyStore = keyStore,
+        keyAlias = hostConfig.keyAlias,
+        keyStorePassword = { hostConfig.keyStorePassword.toCharArray() },
+        privateKeyPassword = { hostConfig.privateKeyPassword.toCharArray() }
+    ) {
+        port = hostConfig.sslPort
+        host = hostConfig.host
+        keyStorePath = keyStoreFile
+    }
 
-                staticResources("/static", null)
+    module { configureModule(dataBaseSource, pageConfig) }
+}
+
+private fun Application.configureModule(
+    dataBaseSource: DataBaseSource,
+    pageConfig: PageConfig
+) {
+    routing {
+        get("/") {
+            call.respondHtml(HttpStatusCode.OK, pageConfig.mainPage)
+        }
+
+        get("/articles") {
+            val articles = dataBaseSource.getArticlePreviews()
+            call.respondHtml(HttpStatusCode.OK) { pageConfig.articlesListPage.invoke(this, articles) }
+        }
+
+        get("/article/{id}") {
+            val article = call.parameters["id"]
+                ?.toLongOrNull()
+                ?.let { dataBaseSource.getArticle(it) }
+
+            if (article != null) {
+                call.respondHtml(HttpStatusCode.OK) { pageConfig.articleRenderer.invoke(this, article) }
+            } else {
+                call.respond(HttpStatusCode.NotFound)
             }
-        }.start(wait = true)
+        }
+
+        get("/image/{id}") {
+            val image = call.parameters["id"]
+                ?.toLongOrNull()
+                ?.let { dataBaseSource.getArticleImage(it) }
+
+            if (image != null) {
+                call.respondBytes(
+                    image,
+                    ContentType.parse("image/webp"),
+                    HttpStatusCode.OK
+                )
+            } else {
+                call.respond(HttpStatusCode.NotFound)
+            }
+        }
+
+        staticResources("/static", null)
     }
 }

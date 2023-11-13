@@ -19,6 +19,7 @@ kotlin {
                 implementation(versions.ktor.server.netty)
                 implementation(versions.ktor.server.html)
                 implementation(versions.ktor.server.ssl)
+                implementation(versions.ktor.server.statusPages)
                 implementation(versions.logback)
                 implementation(versions.kotlin.coroutines)
             }

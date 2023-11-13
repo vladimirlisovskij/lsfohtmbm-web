@@ -1,0 +1,11 @@
+  version: 2
+  updates:
+    - package-ecosystem: "gradle"
+      directory: /
+      schedule:
+        interval: daily
+      rebase-strategy: auto
+      target-branch: "develop"
+      reviewers:
+        - "vladimirlisovskij"
+      open-pull-requests-limit: 1

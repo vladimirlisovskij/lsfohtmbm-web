@@ -19,6 +19,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(projects.mainPage)
+                implementation(projects.errorPage)
                 implementation(projects.articleListPage)
                 implementation(projects.articleRenderer)
                 implementation(projects.databaseSourceImpl)

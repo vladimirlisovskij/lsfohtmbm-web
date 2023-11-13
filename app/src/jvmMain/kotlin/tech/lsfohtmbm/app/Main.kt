@@ -4,6 +4,7 @@ import kotlinx.html.HTML
 import tech.lsfohtmbm.articlelistpage.articleListPage
 import tech.lsfohtmbm.articlerenderer.renderArticle
 import tech.lsfohtmbm.databasesource.impl.createDataBaseSource
+import tech.lsfohtmbm.errorpage.errorPage
 import tech.lsfohtmbm.mainpage.mainPage
 import tech.lsfohtmbm.server.HostConfig
 import tech.lsfohtmbm.server.PageConfig
@@ -32,7 +33,8 @@ fun main(arguments: Array<String>) {
     val pageConfig = PageConfig(
         HTML::mainPage,
         HTML::articleListPage,
-        HTML::renderArticle
+        HTML::renderArticle,
+        HTML::errorPage
     )
 
     val homePath = System.getProperty("user.home")

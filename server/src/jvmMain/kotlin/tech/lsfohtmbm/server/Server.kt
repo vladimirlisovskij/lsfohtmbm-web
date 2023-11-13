@@ -6,6 +6,8 @@ import io.ktor.server.engine.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.HTML
@@ -30,6 +32,7 @@ class PageConfig(
     val mainPage: HTML.() -> Unit,
     val articlesListPage: HTML.(List<ArticlePreview>) -> Unit,
     val articleRenderer: HTML.(Article) -> Unit,
+    val errorPage: HTML.(Int) -> Unit
 )
 
 fun runServer(
@@ -76,10 +79,13 @@ private fun ApplicationEngineEnvironmentBuilder.configureEnvironment(
         keyStorePath = keyStoreFile
     }
 
-    module { configureModule(dataBaseSource, pageConfig) }
+    module {
+        configureRouting(dataBaseSource, pageConfig)
+        configureStatusPages(pageConfig)
+    }
 }
 
-private fun Application.configureModule(
+private fun Application.configureRouting(
     dataBaseSource: DataBaseSource,
     pageConfig: PageConfig
 ) {
@@ -122,5 +128,27 @@ private fun Application.configureModule(
         }
 
         staticResources("/static", null)
+    }
+}
+
+private fun Application.configureStatusPages(
+    pageConfig: PageConfig
+) {
+    install(StatusPages) {
+        exception<Throwable> { call, cause ->
+            call.respondHtml { pageConfig.errorPage.invoke(this, 500) }
+        }
+
+        status(
+            HttpStatusCode.NotFound,
+            HttpStatusCode.BadRequest,
+            HttpStatusCode.MethodNotAllowed,
+            HttpStatusCode.InternalServerError,
+            HttpStatusCode.ServiceUnavailable,
+        ) { call, status ->
+            if (!call.request.uri.startsWith("/image")) {
+                call.respondHtml { pageConfig.errorPage.invoke(this, status.value) }
+            }
+        }
     }
 }

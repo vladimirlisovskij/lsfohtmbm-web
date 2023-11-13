@@ -8,4 +8,14 @@
       target-branch: "develop"
       reviewers:
         - "vladimirlisovskij"
-      open-pull-requests-limit: 1
+      open-pull-requests-limit: 7
+
+    - package-ecosystem: "github-actions"
+      directory: /
+      schedule:
+        interval: daily
+      rebase-strategy: auto
+      target-branch: "develop"
+      reviewers:
+        - "vladimirlisovskij"
+      open-pull-requests-limit: 7

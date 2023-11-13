@@ -1,21 +1,25 @@
-  version: 2
-  updates:
-    - package-ecosystem: "gradle"
-      directory: /
-      schedule:
-        interval: daily
-      rebase-strategy: auto
-      target-branch: "develop"
-      reviewers:
-        - "vladimirlisovskij"
-      open-pull-requests-limit: 7
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: /
+    schedule:
+      interval: daily
+    rebase-strategy: auto
+    target-branch: "main"
+    open-pull-requests-limit: 7
 
-    - package-ecosystem: "github-actions"
-      directory: /
-      schedule:
-        interval: daily
-      rebase-strategy: auto
-      target-branch: "develop"
-      reviewers:
-        - "vladimirlisovskij"
-      open-pull-requests-limit: 7
+  - package-ecosystem: "github-actions"
+    directory: /
+    schedule:
+      interval: daily
+    rebase-strategy: auto
+    target-branch: "main"
+    open-pull-requests-limit: 7
+
+  - package-ecosystem: "docker"
+    directory: /
+    schedule:
+      interval: daily
+    rebase-strategy: auto
+    target-branch: "main"
+    open-pull-requests-limit: 7

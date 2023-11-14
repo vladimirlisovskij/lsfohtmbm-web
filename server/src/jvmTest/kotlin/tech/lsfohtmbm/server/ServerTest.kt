@@ -66,7 +66,7 @@ class ServerTest {
     @Test
     fun testMainPage() = testEnvironmentApplication {
         val response = client.get("$HTTP_BASE_URL/")
-        assertEquals(HttpStatusCode.NotFound, response.status)
+        assertEquals(HttpStatusCode.OK, response.status)
         assertEquals(mockHtml { mockMainPage() }, response.bodyAsText())
     }
 

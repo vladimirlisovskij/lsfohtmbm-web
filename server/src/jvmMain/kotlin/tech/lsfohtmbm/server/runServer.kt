@@ -52,7 +52,7 @@ private fun KeyStore.load(file: File, password: CharArray) {
     FileInputStream(file).use { load(it, password) }
 }
 
-private fun ApplicationEngineEnvironmentBuilder.configureEnvironment(
+internal fun ApplicationEngineEnvironmentBuilder.configureEnvironment(
     dataBaseSource: DataBaseSource,
     pageConfig: PageConfig,
     hostConfig: HostConfig
@@ -146,7 +146,11 @@ private fun Application.configureStatusPages(
             HttpStatusCode.InternalServerError,
             HttpStatusCode.ServiceUnavailable,
         ) { call, status ->
-            if (!call.request.uri.startsWith("/image")) {
+            val uri = call.request.uri
+            if (
+                !uri.startsWith("/image") &&
+                !uri.startsWith("/static")
+            ) {
                 call.respondHtml { pageConfig.errorPage.invoke(this, status.value) }
             }
         }

@@ -3,7 +3,11 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -22,6 +26,13 @@ kotlin {
                 implementation(versions.ktor.server.statusPages)
                 implementation(versions.logback)
                 implementation(versions.kotlin.coroutines)
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(versions.ktor.server.test)
             }
         }
     }

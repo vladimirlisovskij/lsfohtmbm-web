@@ -6,7 +6,7 @@ on:
       - created
 
 jobs:
-  build:
+  upload_to_docker_hub:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout project sources

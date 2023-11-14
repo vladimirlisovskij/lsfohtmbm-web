@@ -21,6 +21,7 @@ private const val HTTP_BASE_URL = "http://$HOST:$DEFAULT_PORT"
 private const val HTTPS_BASE_URL = "https://$HOST:$SSL_PORT"
 
 private const val AVAILABLE_ARTICLE_ID = 1L
+private const val AVAILABLE_IMAGE_ID = 1L
 
 class ServerTest {
     private val pageConfig = PageConfig(
@@ -53,9 +54,13 @@ class ServerTest {
         listOf()
     )
 
+    private val availableImage = byteArrayOf(1, 2, 3)
+
     private val mockDataSource = MockDataBaseSource(
         articlePreviews,
-        availableArticle
+        availableArticle,
+        availableImage,
+        AVAILABLE_IMAGE_ID
     )
 
     @Test
@@ -112,6 +117,27 @@ class ServerTest {
         assertEquals(HttpStatusCode.NotFound, testResource.status)
     }
 
+    @Test
+    fun testImage() = testEnvironmentApplication {
+        val image = client.get("$HTTP_BASE_URL/image/$AVAILABLE_IMAGE_ID")
+        assertEquals(HttpStatusCode.OK, image.status)
+        val imageBody = image.readBytes()
+        assertEquals(availableImage.size, imageBody.size)
+        assert(availableImage.mapIndexed { index, byte -> imageBody[index] == byte }.all { it })
+    }
+
+    @Test
+    fun testImageNotFound() = testEnvironmentApplication {
+        val image = client.get("$HTTP_BASE_URL/image/123")
+        assertEquals(HttpStatusCode.NotFound, image.status)
+    }
+
+    @Test
+    fun testImageErrorArgument() = testEnvironmentApplication {
+        val image = client.get("$HTTP_BASE_URL/image/qwe")
+        assertEquals(HttpStatusCode.NotFound, image.status)
+    }
+
 //    @Test
 //    fun testSsl() {
 //        TODO()
@@ -163,6 +189,8 @@ class ServerTest {
     private class MockDataBaseSource(
         private val preview: List<ArticlePreview>,
         private val availableArticle: Article,
+        private val availableIcon: ByteArray,
+        private val availableImageId: Long
     ) : DataBaseSource {
         override suspend fun getArticlePreviews(): List<ArticlePreview> {
             return preview
@@ -177,8 +205,11 @@ class ServerTest {
         }
 
         override suspend fun getArticleImage(id: Long): ByteArray? {
-            TODO("Not yet implemented")
+            return if (id == availableImageId) {
+                availableIcon
+            } else {
+                null
+            }
         }
-
     }
 }

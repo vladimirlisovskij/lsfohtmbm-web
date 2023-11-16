@@ -1,0 +1,36 @@
+plugins {
+    alias(versionCatalog.plugins.kotlin.multiplatform)
+    application
+}
+
+kotlin {
+    jvm {
+        withJava()
+    }
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(projects.entity.entityArticle)
+                implementation(projects.source.sourceDatabaseApi)
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation(projects.source.sourceDatabaseImpl)
+                implementation(projects.server.serverStorage)
+                implementation(projects.utils.utilsApp)
+            }
+        }
+    }
+}
+
+application {
+    mainClass.set("tech.lsfohtmbm.app.storage.MainKt")
+}
+
+tasks.named<JavaExec>("run") {
+    dependsOn(tasks.named<Jar>("jvmJar"))
+    classpath(tasks.named<Jar>("jvmJar"))
+}

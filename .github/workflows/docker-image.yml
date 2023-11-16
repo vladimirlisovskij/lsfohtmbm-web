@@ -16,7 +16,7 @@ jobs:
       uses: gradle/gradle-build-action@v2
 
     - name: Create distribution tar archive
-      run: ./gradlew :app:distTar
+      run: ./gradlew :app:app_blog_web:distTar
 
     - name: Extract distribution files
       run: tar -xvf ./app/build/distributions/app.tar -C ./app/build/distributions

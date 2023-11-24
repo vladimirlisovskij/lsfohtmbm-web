@@ -17,7 +17,7 @@ runs:
   using: composite
   steps:
     - name: Create dist dir
-      run: mkdir ./dist
+      run: mkdir -p ./dist
       shell: bash
 
     - name: Create distribution tar archive

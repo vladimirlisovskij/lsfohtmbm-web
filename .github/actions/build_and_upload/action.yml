@@ -21,7 +21,7 @@ runs:
       shell: bash
 
     - name: Create distribution tar archive
-      run: ./gradlew ${{ inputs.module_gradle_path }}
+      run: ./gradlew ${{ inputs.module_gradle_path }}:distTar
       shell: bash
 
     - name: Extract distribution files

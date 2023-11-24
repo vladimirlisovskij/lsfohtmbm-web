@@ -27,9 +27,9 @@ jobs:
     - name: Upload front-web
       uses: ./.github/actions/build_and_upload
       with:
-        module_name: app_blog_web
-        module_path: ./app/app_blog_web
-        module_gradle_path: :app:app_blog_web
+        module_name: app_front_web
+        module_path: ./app/app_front_web
+        module_gradle_path: :app:app_front_web
         dockerfile: ./Dockerfile
         tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-front-web:test
 
@@ -45,8 +45,8 @@ jobs:
     - name: Upload admin-web
       uses: ./.github/actions/build_and_upload
       with:
-        module_name: app_admin_editor
-        module_path: ./app/app_admin_editor
-        module_gradle_path: :app:app_admin_editor
+        module_name: app_admin_web
+        module_path: ./app/app_admin_web
+        module_gradle_path: :app:app_admin_web
         dockerfile: ./Dockerfile
         tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-admin-web:test

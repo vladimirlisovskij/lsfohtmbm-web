@@ -1,9 +1,12 @@
 name: Docker Image CI
 
 on:
-  release:
-    types:
-      - created
+#  release:
+#    types:
+#      - created
+  push:
+    branches:
+      - admin_panel
 
 jobs:
   upload_to_docker_hub:
@@ -28,7 +31,7 @@ jobs:
         module_path: ./app/app_blog_web
         module_gradle_path: :app:app_blog_web
         dockerfile: ./Dockerfile
-        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-front-web:${{ github.event.release.tag_name }}
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-front-web:test
 
     - name: Upload storage
       uses: ./.github/actions/build_and_upload
@@ -37,7 +40,7 @@ jobs:
         module_path: ./app/app_storage
         module_gradle_path: :app:app_storage
         dockerfile: ./Dockerfile
-        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-storage:${{ github.event.release.tag_name }}
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-storage:test
 
     - name: Upload admin-web
       uses: ./.github/actions/build_and_upload
@@ -46,4 +49,4 @@ jobs:
         module_path: ./app/app_admin_editor
         module_gradle_path: :app:app_admin_editor
         dockerfile: ./Dockerfile
-        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-admin-web:${{ github.event.release.tag_name }}
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-admin-web:test

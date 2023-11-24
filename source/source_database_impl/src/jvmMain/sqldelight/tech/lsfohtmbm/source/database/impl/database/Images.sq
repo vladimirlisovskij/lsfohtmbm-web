@@ -1,0 +1,4 @@
+get:
+SELECT image FROM images
+WHERE id = ?
+LIMIT 1;

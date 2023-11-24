@@ -1,3 +1,5 @@
+ARG dist_path
+ARG entrypoint_name
 FROM amazoncorretto:21-alpine-jdk
-COPY ./app/build/distributions/app /app
-ENTRYPOINT ["/app/bin/app"]
+COPY ${dist_path} /app
+ENTRYPOINT ["/app/bin/${entrypoint_name}"]

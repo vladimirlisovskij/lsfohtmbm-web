@@ -1,0 +1,40 @@
+name: Build gradle module and upload to DockerHub
+description: Build gradle module and upload to DockerHub
+
+inputs:
+  module_name:
+    description: Gradle module name
+  module_path:
+    description: Gradle module path
+  module_gradle_path:
+    description: Gradle module path
+  dockerfile:
+    description: Dockerfile
+  tag:
+    description: DockerHub image tag
+
+runs:
+  using: composite
+  steps:
+    - name: Create dist dir
+      run: mkdir -p ./dist
+      shell: bash
+
+    - name: Create distribution tar archive
+      run: ./gradlew ${{ inputs.module_gradle_path }}:distTar
+      shell: bash
+
+    - name: Extract distribution files
+      run: tar -xvf ${{ inputs.module_path }}/build/distributions/${{ inputs.module_name }}.tar -C ./dist
+      shell: bash
+
+    - name: Build and upload Docker image to DockerHub
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ${{ inputs.dockerfile }}
+        build-args: |
+          dist_path=./dist/${{ inputs.module_name }}
+          entrypoint_name=${{ inputs.module_name }}
+        push: true
+        tags: ${{ inputs.tag }}

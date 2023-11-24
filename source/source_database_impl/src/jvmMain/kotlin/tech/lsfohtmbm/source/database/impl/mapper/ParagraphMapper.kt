@@ -1,7 +1,7 @@
 package tech.lsfohtmbm.source.database.impl.mapper
 
-import tech.lsfohtmbm.entity.article.Paragraph
-import tech.lsfohtmbm.entity.article.ParagraphType
+import tech.lsfohtmbm.entity.storage.Paragraph
+import tech.lsfohtmbm.entity.storage.ParagraphType
 
 private const val PARAGRAPH_SEPARATOR = '|'
 private const val PARAGRAPH_END = ']'
@@ -39,5 +39,24 @@ internal class ParagraphMapper {
         }
 
         return paragraphs
+    }
+
+    fun mapToString(paragraphs: List<Paragraph>): String {
+        return buildString {
+            paragraphs.forEach {
+                val mappedType = when(it.type) {
+                    ParagraphType.PRIMARY_HEADER -> PARAGRAPH_PRIMARY_HEADER
+                    ParagraphType.SECONDARY_HEADER -> PARAGRAPH_SECONDARY_HEADER
+                    ParagraphType.TEXT -> PARAGRAPH_TEXT
+                    ParagraphType.IMAGE -> PARAGRAPH_IMAGE
+                    ParagraphType.DESCRIPTION -> PARAGRAPH_DESCRIPTION
+                }
+
+                append(mappedType)
+                append(PARAGRAPH_SEPARATOR)
+                append(it.value)
+                append(PARAGRAPH_END)
+            }
+        }
     }
 }

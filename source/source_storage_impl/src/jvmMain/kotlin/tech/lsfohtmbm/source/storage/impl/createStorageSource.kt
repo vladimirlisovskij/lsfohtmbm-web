@@ -2,7 +2,6 @@ package tech.lsfohtmbm.source.storage.impl
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.engine.jetty.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import tech.lsfohtmbm.source.storage.api.StorageSource

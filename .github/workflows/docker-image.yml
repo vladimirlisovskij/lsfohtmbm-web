@@ -9,29 +9,41 @@ jobs:
   upload_to_docker_hub:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout project sources
-      uses: actions/checkout@v4
-
-    - name: Setup Gradle
-      uses: gradle/gradle-build-action@v2
-
-    - name: Create distribution tar archive
-      run: ./gradlew :app:app_blog_web:distTar
-
-    - name: Extract distribution files
-      run: tar -xvf ./app/build/distributions/app.tar -C ./app/build/distributions
-      shell: bash
-
     - name: Login to Docker Hub
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Build and upload Docker image to DockerHub
-      uses: docker/build-push-action@v5
+    - name: Checkout project sources
+      uses: actions/checkout@v4
+
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2
+
+    - name: Upload front-web
+      uses: ./.github/actions/build_and_upload
       with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-web:${{ github.event.release.tag_name }}
+        module_name: app_blog_web
+        module_path: ./app/app_blog_web
+        module_gradle_path: :app:app_blog_web
+        dockerfile: ./Dockerfile
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-front-web:${{ github.event.release.tag_name }}
+
+    - name: Upload storage
+      uses: ./.github/actions/build_and_upload
+      with:
+        module_name: app_storage
+        module_path: ./app/app_storage
+        module_gradle_path: :app:app_storage
+        dockerfile: ./Dockerfile
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-storage:${{ github.event.release.tag_name }}
+
+    - name: Upload admin-web
+      uses: ./.github/actions/build_and_upload
+      with:
+        module_name: app_admin_editor
+        module_path: ./app/app_admin_editor
+        module_gradle_path: :app:app_admin_editor
+        dockerfile: ./Dockerfile
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/lsfohtmbm-blog-admin-web:${{ github.event.release.tag_name }}

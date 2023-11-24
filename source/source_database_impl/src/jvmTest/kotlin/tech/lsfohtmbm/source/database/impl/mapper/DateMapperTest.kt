@@ -3,7 +3,7 @@ package tech.lsfohtmbm.source.database.impl.mapper
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import tech.lsfohtmbm.entity.article.DateWrapper
+import tech.lsfohtmbm.entity.storage.DateWrapper
 
 private const val DAY = 11
 private const val MONTH = 5

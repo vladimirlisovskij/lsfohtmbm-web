@@ -37,6 +37,9 @@ sqldelight {
         create("Database") {
             srcDirs("src/jvmMain/sqldelight")
             packageName.set("tech.lsfohtmbm.source.database.impl.database")
+            dialect("app.cash.sqldelight:sqlite-3-38-dialect:${versionCatalog.versions.sqldelight.get()}")
+            deriveSchemaFromMigrations = true
+            verifyMigrations = true
         }
     }
 }

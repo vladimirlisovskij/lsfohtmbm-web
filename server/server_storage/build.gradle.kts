@@ -12,7 +12,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.entity.entityArticle)
+                implementation(projects.entity.entityStorage)
+                implementation(projects.api.apiStorage)
                 implementation(projects.source.sourceDatabaseApi)
             }
         }
@@ -24,7 +25,6 @@ kotlin {
                 implementation(versionCatalog.ktor.server.contentNegotiation.core)
                 implementation(versionCatalog.ktor.server.contentNegotiation.json)
                 implementation(versionCatalog.logback)
-                implementation(versionCatalog.kotlin.coroutines)
                 implementation(versionCatalog.kotlin.serialiaztion.json)
             }
         }

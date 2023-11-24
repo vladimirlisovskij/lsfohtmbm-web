@@ -1,6 +1,6 @@
 package tech.lsfohtmbm.source.database.impl.mapper
 
-import tech.lsfohtmbm.entity.article.DateWrapper
+import tech.lsfohtmbm.entity.storage.DateWrapper
 
 
 private const val SHIFT_DAY = 0

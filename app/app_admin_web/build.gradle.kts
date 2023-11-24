@@ -11,19 +11,17 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.entity.entityArticle)
-                implementation(projects.source.sourceDatabaseApi)
+                implementation(projects.entity.entityStorage)
+                implementation(projects.source.sourceStorageApi)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(projects.page.pageMain)
-                implementation(projects.page.pageError)
-                implementation(projects.page.pageArticleList)
-                implementation(projects.page.pageArticleRenderer)
-                implementation(projects.source.sourceDatabaseImpl)
-                implementation(projects.server.serverBlogWeb)
+                implementation(projects.source.sourceStorageImpl)
+                implementation(projects.server.serverAdminWeb)
+                implementation(projects.page.pageAdmin)
+                implementation(projects.utils.utilsApp)
 
                 implementation(versionCatalog.kotlin.html)
             }

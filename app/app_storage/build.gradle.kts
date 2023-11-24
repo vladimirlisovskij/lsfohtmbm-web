@@ -11,7 +11,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.entity.entityArticle)
+                implementation(projects.entity.entityStorage)
                 implementation(projects.source.sourceDatabaseApi)
             }
         }

@@ -12,8 +12,9 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(projects.entity.entityArticle)
-                implementation(projects.source.sourceDatabaseApi)
+                implementation(projects.entity.entityStorage)
+                implementation(projects.api.apiAdminWeb)
+                implementation(projects.source.sourceStorageApi)
             }
         }
 
@@ -22,10 +23,10 @@ kotlin {
                 implementation(versionCatalog.ktor.server.core)
                 implementation(versionCatalog.ktor.server.netty)
                 implementation(versionCatalog.ktor.server.html)
-                implementation(versionCatalog.ktor.server.ssl)
-                implementation(versionCatalog.ktor.server.statusPages)
+                implementation(versionCatalog.ktor.server.contentNegotiation.core)
+                implementation(versionCatalog.ktor.server.contentNegotiation.json)
                 implementation(versionCatalog.logback)
-                implementation(versionCatalog.kotlin.coroutines)
+                implementation(versionCatalog.kotlin.serialiaztion.json)
             }
         }
 
@@ -33,6 +34,8 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation(versionCatalog.ktor.server.test)
+                implementation(versionCatalog.ktor.client.contentNegotiation.core)
+                implementation(versionCatalog.ktor.client.contentNegotiation.json)
             }
         }
     }

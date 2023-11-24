@@ -3,7 +3,7 @@ package tech.lsfohtmbm.source.database.impl.mapper
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import tech.lsfohtmbm.entity.article.ParagraphType
+import tech.lsfohtmbm.entity.storage.ParagraphType
 
 private const val PRIMARY_HEADER = "PRIMARY_HEADER"
 private const val SECONDARY_HEADER = "SECONDARY_HEADER"

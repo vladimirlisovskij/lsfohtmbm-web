@@ -1,15 +1,17 @@
-CREATE TABLE articles (
-	id INTEGER NOT NULL,
-	date INTEGER NOT NULL,
-	name TEXT NOT NULL,
-	text TEXT NOT NULL,
-	PRIMARY KEY(id)
-);
-
 get:
 SELECT date, name, text FROM articles
 WHERE id = ?
 LIMIT 1;
 
 getPreview:
-SELECT id, date, name FROM articles;
+SELECT id, date, name FROM articles
+ORDER BY date ASC;
+
+delete:
+DELETE FROM articles
+WHERE id = ?;
+
+insert:
+INSERT OR REPLACE INTO articles
+VALUES (?, ?, ?, ?)
+RETURNING id;

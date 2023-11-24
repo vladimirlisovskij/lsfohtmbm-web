@@ -6,8 +6,12 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import tech.lsfohtmbm.api.storage.StorageApi
+import tech.lsfohtmbm.entity.storage.Article
+import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.source.database.api.DataBaseSource
 
 fun runServer(
@@ -43,24 +47,48 @@ private fun Application.configureRouting(
     dataBaseSource: DataBaseSource,
 ) {
     routing {
-        get("/previews") {
+        get("/${StorageApi.ENDPOINT_PREVIEWS}") {
             call.respond(HttpStatusCode.OK, dataBaseSource.getArticlePreviews())
         }
 
-        get("/article") {
-            val article = call.request.queryParameters["id"]
+        get("/${StorageApi.ENDPOINT_ARTICLE}") {
+            val article = call.request.queryParameters[StorageApi.PARAM_ID]
                 ?.toLongOrNull()
                 ?.let { dataBaseSource.getArticle(it) }
 
             if (article != null) {
                 call.respond(HttpStatusCode.OK, article)
             } else {
-                call.respond(HttpStatusCode.NotFound)
+                call.respond(HttpStatusCode.BadRequest)
             }
         }
 
-        get("/image") {
-            val image = call.request.queryParameters["id"]
+        post("/${StorageApi.ENDPOINT_DELETE}") {
+            val id = call.receiveParameters()[StorageApi.PARAM_ID]
+                ?.toLongOrNull()
+
+            if (id != null) {
+                dataBaseSource.deleteArticle(id)
+                call.respond(HttpStatusCode.OK)
+            } else {
+                call.respond(HttpStatusCode.BadRequest)
+            }
+        }
+
+        post("/${StorageApi.ENDPOINT_INSERT}") {
+            val article = call.receiveNullable<Article>()
+            if (article != null) {
+                call.respond(
+                    HttpStatusCode.OK,
+                    InsertionResult(dataBaseSource.insertArticle(article))
+                )
+            } else {
+                call.respond(HttpStatusCode.BadRequest)
+            }
+        }
+
+        get("/${StorageApi.ENDPOINT_IMAGE}") {
+            val image = call.request.queryParameters[StorageApi.PARAM_ID]
                 ?.toLongOrNull()
                 ?.let { dataBaseSource.getArticleImage(it) }
 
@@ -71,7 +99,7 @@ private fun Application.configureRouting(
                     HttpStatusCode.OK
                 )
             } else {
-                call.respond(HttpStatusCode.NotFound)
+                call.respond(HttpStatusCode.BadRequest)
             }
         }
     }

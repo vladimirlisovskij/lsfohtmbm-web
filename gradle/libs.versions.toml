@@ -1,6 +1,7 @@
 [versions]
 kotlin-core = "1.9.20"
 kotlin-html = "0.9.1"
+kotlin-react = "18.2.0-pre.346"
 kotlin-coroutines = "1.7.3"
 kotlin-serialization = "1.6.0"
 ktor = "2.3.6"
@@ -17,8 +18,8 @@ ktor-server-test = { module = "io.ktor:ktor-server-test-host", version.ref = "kt
 ktor-server-contentNegotiation-core = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
 ktor-server-contentNegotiation-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-jetty = { module = "io.ktor:ktor-client-jetty", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-client-contentNegotiation-core = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-contentNegotiation-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
@@ -26,6 +27,8 @@ kotlin-html = { module = "org.jetbrains.kotlinx:kotlinx-html", version.ref = "ko
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-serialiaztion-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 kotlin-serialiaztion-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+kotlin-react-core = { module = "org.jetbrains.kotlin-wrappers:kotlin-react", version.ref = "kotlin-react" }
+kotlin-react-dom = { module = "org.jetbrains.kotlin-wrappers:kotlin-react-dom", version.ref = "kotlin-react" }
 
 logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 

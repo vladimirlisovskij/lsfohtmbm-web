@@ -1,12 +1,9 @@
 name: Docker Image CI
 
 on:
-#  release:
-#    types:
-#      - created
-  push:
-    branches:
-      - admin_panel
+  release:
+    types:
+      - created
 
 jobs:
   upload_to_docker_hub:

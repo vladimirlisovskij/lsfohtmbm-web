@@ -2,7 +2,6 @@ package tech.lsfohtmbm.page.admin
 
 import kotlinx.coroutines.launch
 import react.*
-import react.dom.html.InputType
 import react.dom.html.ReactHTML
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
@@ -13,6 +12,7 @@ import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.DateWrapper
 import tech.lsfohtmbm.entity.storage.Paragraph
 import tech.lsfohtmbm.entity.storage.ParagraphType
+import web.html.InputType
 import kotlin.js.Date
 
 internal external interface EditorProps : Props {

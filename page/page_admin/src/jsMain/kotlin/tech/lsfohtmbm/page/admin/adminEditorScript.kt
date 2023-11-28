@@ -1,10 +1,10 @@
 package tech.lsfohtmbm.page.admin
 
-import kotlinx.browser.document
-import react.*
+import react.create
 import react.dom.client.createRoot
+import web.dom.document
 
 fun main() {
     val content = mainFlowFc.create()
-    createRoot(document.body!!).render(content)
+    createRoot(document.body).render(content)
 }

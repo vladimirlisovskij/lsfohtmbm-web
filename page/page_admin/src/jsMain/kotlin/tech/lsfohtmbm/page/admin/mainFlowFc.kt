@@ -1,5 +1,6 @@
 package tech.lsfohtmbm.page.admin
 
+import js.core.jso
 import react.*
 
 internal val mainFlowFc = FC<Props> {
@@ -8,7 +9,8 @@ internal val mainFlowFc = FC<Props> {
     when (val curState = mainState) {
         is MainState.Editor -> {
             child(
-                editorFc.create {
+                editorFc,
+                jso {
                     id = curState.id
                     onBackClicked = { mainState = MainState.Main }
                 }
@@ -17,7 +19,8 @@ internal val mainFlowFc = FC<Props> {
 
         MainState.Main -> {
             child(
-                mainFc.create {
+                mainFc,
+                jso {
                     onCreateClicked = { mainState = MainState.Editor(null) }
                     onPreviewsClicked = { mainState = MainState.Previews }
                 }
@@ -26,7 +29,8 @@ internal val mainFlowFc = FC<Props> {
 
         MainState.Previews -> {
             child(
-                previewsFc.create {
+                previewsFc,
+                jso {
                     onBackClicked = { mainState = MainState.Main }
                     onArticleClicked = { mainState = MainState.Editor(it) }
                 }

@@ -1,12 +1,12 @@
 package tech.lsfohtmbm.page.admin
 
-import csstype.ClassName
 import kotlinx.coroutines.launch
 import react.*
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.p
 import tech.lsfohtmbm.entity.storage.ArticlePreview
+import web.cssom.ClassName
 
 internal external interface PreviewsProps : Props {
     var onBackClicked: () -> Unit

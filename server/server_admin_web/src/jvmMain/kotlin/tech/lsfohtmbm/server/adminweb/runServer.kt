@@ -61,7 +61,12 @@ private fun Application.configureRouting(
         }
 
         get("/${AdminWebApi.ENDPOINT_PREVIEWS}") {
-            call.respond(HttpStatusCode.OK, storage.getArticlePreviews())
+            val previews = storage.getArticlePreviews()
+            if (previews != null) {
+                call.respond(HttpStatusCode.OK, previews)
+            } else {
+                call.respond(HttpStatusCode.BadRequest)
+            }
         }
 
         post("/${AdminWebApi.ENDPOINT_INSERT}") {

@@ -95,7 +95,7 @@ private fun Application.configureRouting(
         }
 
         get("/articles") {
-            val previews = storageSource.getArticlePreviews().previews
+            val previews = storageSource.getArticlePreviews()?.previews.orEmpty()
             call.respondHtml(HttpStatusCode.OK) { pageConfig.articlesListPage.invoke(this, previews) }
         }
 

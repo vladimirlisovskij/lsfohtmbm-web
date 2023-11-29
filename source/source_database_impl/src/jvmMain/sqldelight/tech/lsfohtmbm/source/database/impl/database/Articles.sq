@@ -5,7 +5,7 @@ LIMIT 1;
 
 getPreview:
 SELECT id, date, name FROM articles
-ORDER BY date ASC;
+ORDER BY date DESC;
 
 delete:
 DELETE FROM articles

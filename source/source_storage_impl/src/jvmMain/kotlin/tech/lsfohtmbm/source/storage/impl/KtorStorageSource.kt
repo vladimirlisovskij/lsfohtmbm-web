@@ -16,17 +16,21 @@ internal class KtorStorageSource(
     private val client: HttpClient,
     private val baseUrl: String
 ) : StorageSource {
-    override suspend fun getArticlePreviews(): Previews {
-        return client
-            .get("$baseUrl/${StorageApi.ENDPOINT_PREVIEWS}")
-            .body()
+    override suspend fun getArticlePreviews(): Previews? {
+        return runCatching {
+            client
+                .get("$baseUrl/${StorageApi.ENDPOINT_PREVIEWS}")
+                .body<Previews>()
+        }.getOrNull()
     }
 
     override suspend fun getArticle(id: Long): Article? {
-        return client
-            .get("$baseUrl/${StorageApi.ENDPOINT_ARTICLE}") {
-                url.parameters.append("id", id.toString())
-            }.body()
+        return runCatching {
+            client
+                .get("$baseUrl/${StorageApi.ENDPOINT_ARTICLE}") {
+                    url.parameters.append("id", id.toString())
+                }.body<Article>()
+        }.getOrNull()
     }
 
     override suspend fun deleteArticle(id: Long): Boolean {

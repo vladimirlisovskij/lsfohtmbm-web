@@ -5,7 +5,7 @@ import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
 
 interface StorageSource {
-    suspend fun getArticlePreviews(): Previews
+    suspend fun getArticlePreviews(): Previews?
 
     suspend fun getArticle(id: Long): Article?
 

@@ -1,6 +1,7 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("./build_logic")
     repositories {
         gradlePluginPortal()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
@@ -11,12 +12,6 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         maven(url = "https://oss.sonatype.org/content/repositories/snapshots")
-    }
-
-    versionCatalogs {
-        create("versionCatalog") {
-            from(files("./gradle/libs.versions.toml"))
-        }
     }
 }
 

@@ -1,5 +1,6 @@
 plugins {
-    alias(versionCatalog.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform)
+    id("build_logic.detekt")
 }
 
 kotlin {

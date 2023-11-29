@@ -1,6 +1,7 @@
 plugins {
-    alias(versionCatalog.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform)
     application
+    id("build_logic.detekt")
 }
 
 kotlin {
@@ -26,7 +27,7 @@ kotlin {
                 implementation(projects.server.serverFrontWeb)
                 implementation(projects.utils.utilsApp)
 
-                implementation(versionCatalog.kotlin.html)
+                implementation(libs.kotlin.html)
             }
         }
     }

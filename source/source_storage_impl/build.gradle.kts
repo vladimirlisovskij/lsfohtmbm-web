@@ -1,5 +1,6 @@
 plugins {
-    alias(versionCatalog.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform)
+    id("build_logic.detekt")
 }
 
 kotlin {
@@ -19,18 +20,18 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(versionCatalog.ktor.client.core)
-                implementation(versionCatalog.ktor.client.cio)
-                implementation(versionCatalog.ktor.client.contentNegotiation.core)
-                implementation(versionCatalog.ktor.client.contentNegotiation.json)
-                implementation(versionCatalog.kotlin.serialiaztion.json)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.contentNegotiation.core)
+                implementation(libs.ktor.client.contentNegotiation.json)
+                implementation(libs.kotlin.serialiaztion.json)
             }
         }
 
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation(versionCatalog.ktor.client.test)
+                implementation(libs.ktor.client.test)
             }
         }
     }

@@ -8,7 +8,7 @@ import tech.lsfohtmbm.source.database.impl.mapper.ParagraphMapper
 fun createDataBaseSource(path: String): DataBaseSource {
     return SqlDelightDataBaseSource(
         ioDispatcher = Dispatchers.IO,
-        database = createDatabase(path),
+        database = createDatabase(createDriver(path)),
         paragraphMapper = ParagraphMapper(),
         dateMapper = DateMapper()
     )

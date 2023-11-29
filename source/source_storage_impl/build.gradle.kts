@@ -3,7 +3,11 @@ plugins {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
+    }
 
     sourceSets {
         val commonMain by getting {
@@ -20,6 +24,13 @@ kotlin {
                 implementation(versionCatalog.ktor.client.contentNegotiation.core)
                 implementation(versionCatalog.ktor.client.contentNegotiation.json)
                 implementation(versionCatalog.kotlin.serialiaztion.json)
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(versionCatalog.ktor.client.test)
             }
         }
     }

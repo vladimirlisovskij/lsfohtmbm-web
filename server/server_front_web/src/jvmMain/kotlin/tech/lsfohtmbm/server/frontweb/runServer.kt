@@ -138,7 +138,6 @@ private fun Application.configureStatusPages(
         exception<Throwable> { call, cause ->
             call.respondHtml {
                 pageConfig.errorPage.invoke(this, 500)
-                + cause.message.orEmpty()
             }
         }
 

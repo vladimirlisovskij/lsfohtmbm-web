@@ -46,3 +46,4 @@ include(":source:source_admin_api")
 include(":source:source_admin_impl")
 
 include(":utils:utils_app")
+include(":utils:utils_coroutines")

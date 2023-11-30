@@ -20,6 +20,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
+                implementation(projects.utils.utilsCoroutines)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.client.contentNegotiation.core)

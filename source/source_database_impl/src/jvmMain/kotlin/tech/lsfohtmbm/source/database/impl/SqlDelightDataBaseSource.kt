@@ -25,7 +25,8 @@ internal class SqlDelightDataBaseSource(
                         title = title,
                         date = dateMapper.mapToDateWrapper(date)
                     )
-                }.executeAsList()
+                }
+                .executeAsList()
                 .let { Previews(it) }
         }
     }

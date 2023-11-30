@@ -5,10 +5,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import java.io.File
 
 class Detekt : Plugin<Project> {
     override fun apply(target: Project) {
@@ -31,6 +30,16 @@ class Detekt : Plugin<Project> {
             dependencies {
                 "detektPlugins"(libs.findLibrary("detekt-formatting").get())
             }
+
+//            tasks.named<Detekt>("detekt") {
+//                reports {
+//                    md.required.set(false)
+//                    xml.required.set(false)
+//                    html.required.set(false)
+//                    txt.required.set(false)
+//                    sarif.required.set(false)
+//                }
+//            }
         }
     }
 

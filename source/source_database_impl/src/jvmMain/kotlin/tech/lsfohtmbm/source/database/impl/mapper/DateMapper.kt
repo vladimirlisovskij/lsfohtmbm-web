@@ -29,7 +29,7 @@ internal class DateMapper {
     }
 
     private fun Int.getMaskedValue(mask: Int, shift: Int): Int {
-        return (this shr shift) and mask
+        return this shr shift and mask
     }
 
     private fun Int.addMaskedValue(shift: Int, value: Int): Int {

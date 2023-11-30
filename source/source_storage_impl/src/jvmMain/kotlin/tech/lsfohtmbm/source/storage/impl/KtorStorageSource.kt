@@ -16,13 +16,14 @@ import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.storage.api.StorageSource
+import tech.lsfohtmbm.utils.coroutines.cancellableRunCatching
 
 internal class KtorStorageSource(
     private val client: HttpClient,
     private val baseUrl: String
 ) : StorageSource {
     override suspend fun getArticlePreviews(): Previews? {
-        return runCatching {
+        return cancellableRunCatching {
             client
                 .get("$baseUrl/${StorageApi.ENDPOINT_PREVIEWS}")
                 .body<Previews>()
@@ -30,16 +31,17 @@ internal class KtorStorageSource(
     }
 
     override suspend fun getArticle(id: Long): Article? {
-        return runCatching {
+        return cancellableRunCatching {
             client
                 .get("$baseUrl/${StorageApi.ENDPOINT_ARTICLE}") {
                     url.parameters.append("id", id.toString())
-                }.body<Article>()
+                }
+                .body<Article>()
         }.getOrNull()
     }
 
     override suspend fun deleteArticle(id: Long): Boolean {
-        return runCatching {
+        return cancellableRunCatching {
             client.post("$baseUrl/${StorageApi.ENDPOINT_DELETE}") {
                 setBody(
                     FormDataContent(
@@ -51,7 +53,7 @@ internal class KtorStorageSource(
     }
 
     override suspend fun insertArticle(article: Article): InsertionResult? {
-        return runCatching {
+        return cancellableRunCatching {
             client.post("$baseUrl/${StorageApi.ENDPOINT_INSERT}") {
                 setBody(article)
                 contentType(ContentType.Application.Json)

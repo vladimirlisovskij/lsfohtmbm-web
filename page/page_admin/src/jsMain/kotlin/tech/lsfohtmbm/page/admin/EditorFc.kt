@@ -134,15 +134,23 @@ private fun Date.toUiValue(): String {
         .slice(0..9)
 }
 
-private const val DATE_WRAPPER_ARGS_COUNT = 3
+private const val DATE_SEGMENTS_COUNT = 3
+private const val SEGMENT_DAY = 2
+private const val SEGMENT_MONTH = 1
+private const val SEGMENT_YEAR = 2
 
 private fun ArticleModel.toDomainModel(): Article? {
     val date = date.split("-").mapNotNull { it.toIntOrNull() }
-    if (date.size != DATE_WRAPPER_ARGS_COUNT) {
+    if (date.size != DATE_SEGMENTS_COUNT) {
         return null
     }
 
-    val dateWrapper = DateWrapper(date[2], date[1], date[0])
+    val dateWrapper = DateWrapper(
+        date[SEGMENT_DAY],
+        date[SEGMENT_MONTH],
+        date[SEGMENT_YEAR]
+    )
+
     val paragraph = fields
         .mapNotNull { paragraph ->
             ParagraphType.entries

@@ -16,6 +16,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
+                implementation(projects.utils.utilsCoroutines)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.js)
                 implementation(libs.ktor.client.contentNegotiation.core)

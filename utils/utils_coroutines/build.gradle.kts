@@ -5,4 +5,5 @@ plugins {
 
 kotlin {
     jvm()
+    js { browser() }
 }

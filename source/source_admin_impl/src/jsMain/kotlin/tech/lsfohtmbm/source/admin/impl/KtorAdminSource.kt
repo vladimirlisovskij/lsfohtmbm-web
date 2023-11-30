@@ -16,13 +16,14 @@ import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.admin.api.AdminSource
+import tech.lsfohtmbm.utils.coroutines.cancellableRunCatching
 
 class KtorAdminSource(
     private val httpClient: HttpClient,
     private val baseUrl: String
 ) : AdminSource {
     override suspend fun getPreviews(): Previews? {
-        return runCatching {
+        return cancellableRunCatching {
             httpClient
                 .get("$baseUrl/${AdminWebApi.ENDPOINT_PREVIEWS}")
                 .body<Previews>()
@@ -30,16 +31,17 @@ class KtorAdminSource(
     }
 
     override suspend fun getArticle(id: Long): Article? {
-        return runCatching {
+        return cancellableRunCatching {
             httpClient
                 .get("$baseUrl/${AdminWebApi.ENDPOINT_ARTICLE}") {
                     parameter(AdminWebApi.PARAM_ID, id.toString())
-                }.body<Article>()
+                }
+                .body<Article>()
         }.getOrNull()
     }
 
     override suspend fun delete(id: Long): Boolean {
-        return runCatching {
+        return cancellableRunCatching {
             val response = httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_DELETE}") {
                 setBody(
                     FormDataContent(
@@ -53,7 +55,7 @@ class KtorAdminSource(
     }
 
     override suspend fun insert(article: Article): InsertionResult? {
-        return runCatching {
+        return cancellableRunCatching {
             httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_INSERT}") {
                 setBody(article)
                 contentType(ContentType.Application.Json)

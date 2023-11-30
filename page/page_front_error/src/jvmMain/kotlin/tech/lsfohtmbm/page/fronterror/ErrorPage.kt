@@ -17,8 +17,9 @@ fun HTML.errorPage(
 
 @Suppress("MagicNumber")
 private fun Int.getErrorMessage(): String {
-    return when (this) {
-        404 -> "Страница не найдена"
-        else -> "Что-то пошло не так"
+    return if (this == 404) {
+        "Страница не найдена"
+    } else {
+        "Что-то пошло не так"
     }
 }

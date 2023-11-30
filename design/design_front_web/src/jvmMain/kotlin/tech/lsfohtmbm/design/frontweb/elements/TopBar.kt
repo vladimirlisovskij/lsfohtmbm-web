@@ -1,6 +1,10 @@
 package tech.lsfohtmbm.design.frontweb.elements
 
-import kotlinx.html.*
+import kotlinx.html.FlowContent
+import kotlinx.html.a
+import kotlinx.html.header
+import kotlinx.html.nav
+import kotlinx.html.p
 
 fun FlowContent.topBarSegment(ref: String, name: String) {
     a(href = ref) { +name }

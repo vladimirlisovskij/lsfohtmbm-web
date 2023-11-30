@@ -12,5 +12,5 @@ interface DataBaseSource {
 
     suspend fun insertArticle(article: Article): Long
 
-    suspend fun getArticleImage(id: Long) : ByteArray?
+    suspend fun getArticleImage(id: Long): ByteArray?
 }

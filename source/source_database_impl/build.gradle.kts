@@ -1,6 +1,7 @@
 plugins {
-    alias(versionCatalog.plugins.kotlin.multiplatform)
-    alias(versionCatalog.plugins.sqldelight)
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.sqldelight)
+    id("build_logic.detekt")
 }
 
 kotlin {
@@ -19,8 +20,8 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation(versionCatalog.sqldelight.sqlite)
-                implementation(versionCatalog.kotlin.coroutines)
+                implementation(libs.sqldelight.sqlite)
+                implementation(libs.kotlin.coroutines)
             }
         }
 
@@ -37,7 +38,7 @@ sqldelight {
         create("Database") {
             srcDirs("src/jvmMain/sqldelight")
             packageName.set("tech.lsfohtmbm.source.database.impl.database")
-            dialect("app.cash.sqldelight:sqlite-3-38-dialect:${versionCatalog.versions.sqldelight.get()}")
+            dialect("app.cash.sqldelight:sqlite-3-38-dialect:${libs.versions.sqldelight.get()}")
             deriveSchemaFromMigrations = true
             verifyMigrations = true
         }

@@ -1,6 +1,9 @@
+import io.gitlab.arturbosch.detekt.Detekt
+
 plugins {
-    alias(versionCatalog.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform)
     application
+    id("build_logic.detekt")
 }
 
 kotlin {

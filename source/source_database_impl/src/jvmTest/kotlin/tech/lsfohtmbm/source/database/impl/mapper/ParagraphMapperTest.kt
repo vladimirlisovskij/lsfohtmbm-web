@@ -1,8 +1,7 @@
 package tech.lsfohtmbm.source.database.impl.mapper
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import tech.lsfohtmbm.entity.storage.ParagraphType
 
 private const val PRIMARY_HEADER = "PRIMARY_HEADER"
@@ -16,7 +15,6 @@ class ParagraphMapperTest {
 
     @Test
     fun mapToParagraphList() {
-
         val rawParagraphs = "[ph|$PRIMARY_HEADER][sh|$SECONDARY_HEADER][t|$TEXT][d|$DESCRIPTION]"
         val mappedParagraphs = mapper.mapToParagraphList(rawParagraphs)
         assertEquals(4, mappedParagraphs.size)

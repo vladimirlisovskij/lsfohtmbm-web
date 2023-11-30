@@ -20,7 +20,6 @@ private const val ARG_KEYSTORE_PASSWORD = "--keystore_password"
 private const val ARG_KEY_ALIAS = "--key_alias"
 private const val ARG_KEY_PASSWORD = "--key_password"
 
-
 fun main(arguments: Array<String>) {
     val storageHost = arguments.requireArgument(ARG_STORAGE_HOST)
     val host = arguments.requireArgument(ARG_HOST)

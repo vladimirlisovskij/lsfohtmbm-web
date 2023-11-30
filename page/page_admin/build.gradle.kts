@@ -1,5 +1,6 @@
 plugins {
-    alias(versionCatalog.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.multiplatform)
+    id("build_logic.detekt")
 }
 
 kotlin {
@@ -21,9 +22,9 @@ kotlin {
                 implementation(projects.entity.entityStorage)
                 implementation(projects.source.sourceAdminApi)
                 implementation(projects.source.sourceAdminImpl)
-                implementation(versionCatalog.kotlin.react.core)
-                implementation(versionCatalog.kotlin.react.dom)
-                implementation(versionCatalog.kotlin.coroutines)
+                implementation(libs.kotlin.react.core)
+                implementation(libs.kotlin.react.dom)
+                implementation(libs.kotlin.coroutines)
             }
         }
     }

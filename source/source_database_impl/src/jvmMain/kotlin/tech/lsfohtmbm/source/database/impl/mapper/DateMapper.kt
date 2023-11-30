@@ -2,7 +2,6 @@ package tech.lsfohtmbm.source.database.impl.mapper
 
 import tech.lsfohtmbm.entity.storage.DateWrapper
 
-
 private const val SHIFT_DAY = 0
 private const val SHIFT_MONTH = SHIFT_DAY + 5
 private const val SHIFT_YEAR = SHIFT_MONTH + 4
@@ -30,7 +29,7 @@ internal class DateMapper {
     }
 
     private fun Int.getMaskedValue(mask: Int, shift: Int): Int {
-        return (this shr shift) and mask
+        return this shr shift and mask
     }
 
     private fun Int.addMaskedValue(shift: Int, value: Int): Int {

@@ -1,22 +1,34 @@
 package tech.lsfohtmbm.server.adminweb
 
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.testing.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
+import io.ktor.http.parametersOf
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.testing.ApplicationTestBuilder
+import io.ktor.server.testing.testApplication
 import kotlinx.html.HTML
 import kotlinx.html.html
 import kotlinx.html.stream.appendHTML
+import kotlinx.html.unsafe
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Test
 import tech.lsfohtmbm.api.adminweb.AdminWebApi
-import tech.lsfohtmbm.entity.storage.*
+import tech.lsfohtmbm.entity.storage.Article
+import tech.lsfohtmbm.entity.storage.ArticlePreview
+import tech.lsfohtmbm.entity.storage.DateWrapper
+import tech.lsfohtmbm.entity.storage.InsertionResult
+import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.storage.api.StorageSource
 import kotlin.test.assertEquals
 
@@ -157,7 +169,7 @@ class ServerTest {
     }
 
     private fun HTML.mockEditor() {
-        + "mock editor"
+        unsafe { +"mock editor" }
     }
 
     /**

@@ -1,14 +1,21 @@
 package tech.lsfohtmbm.server.frontweb
 
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
-import io.ktor.server.testing.*
+import io.ktor.client.request.get
+import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.readBytes
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.testing.ApplicationTestBuilder
+import io.ktor.server.testing.testApplication
 import kotlinx.html.HTML
 import kotlinx.html.html
 import kotlinx.html.stream.appendHTML
+import kotlinx.html.unsafe
 import org.junit.jupiter.api.Test
-import tech.lsfohtmbm.entity.storage.*
+import tech.lsfohtmbm.entity.storage.Article
+import tech.lsfohtmbm.entity.storage.ArticlePreview
+import tech.lsfohtmbm.entity.storage.DateWrapper
+import tech.lsfohtmbm.entity.storage.InsertionResult
+import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.storage.api.StorageSource
 import kotlin.test.assertEquals
 
@@ -16,7 +23,6 @@ private const val HOST = "192.168.0.1"
 private const val DEFAULT_PORT = 8080
 private const val SSL_PORT = 8443
 private const val HTTP_BASE_URL = "http://$HOST:$DEFAULT_PORT"
-private const val HTTPS_BASE_URL = "https://$HOST:$SSL_PORT"
 
 private const val AVAILABLE_ARTICLE_ID = 1L
 private const val AVAILABLE_IMAGE_ID = 1L
@@ -160,21 +166,21 @@ class ServerTest {
     }
 
     private fun HTML.mockMainPage() {
-        +"mainPage"
+        unsafe { +"mainPage" }
     }
 
     private fun HTML.mockErrorPage(error: Int) {
-        +"errorPage $error"
+        unsafe { +"errorPage $error" }
     }
 
     private fun HTML.mockArticleListPage(preview: List<ArticlePreview>) {
         preview.forEach {
-            +it.toString()
+            unsafe { +it.toString() }
         }
     }
 
     private fun HTML.mockArticleRenderer(article: Article) {
-        +article.toString()
+        unsafe { +article.toString() }
     }
 
     /**

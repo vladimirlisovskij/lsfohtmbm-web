@@ -30,16 +30,6 @@ class Detekt : Plugin<Project> {
             dependencies {
                 "detektPlugins"(libs.findLibrary("detekt-formatting").get())
             }
-
-//            tasks.named<Detekt>("detekt") {
-//                reports {
-//                    md.required.set(false)
-//                    xml.required.set(false)
-//                    html.required.set(false)
-//                    txt.required.set(false)
-//                    sarif.required.set(false)
-//                }
-//            }
         }
     }
 

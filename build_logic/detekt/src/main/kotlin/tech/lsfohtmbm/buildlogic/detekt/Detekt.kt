@@ -23,7 +23,7 @@ class Detekt : Plugin<Project> {
                     parallel = true
                     buildUponDefaultConfig = true
                     autoCorrect = true
-                    config.setFrom("${rootDir}/detekt/detekt.yml")
+                    config.setFrom("${rootDir}/detekt/config.yml")
                     source = files(*(sourceDirs.toTypedArray()))
                 }
             }

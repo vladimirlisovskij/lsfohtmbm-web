@@ -11,7 +11,6 @@ private const val PARAGRAPH_TEXT = "[t"
 private const val PARAGRAPH_IMAGE = "[i"
 private const val PARAGRAPH_DESCRIPTION = "[d"
 
-
 internal class ParagraphMapper {
     fun mapToParagraphList(rawParagraphs: String): List<Paragraph> {
         val paragraphs = mutableListOf<Paragraph>()
@@ -22,7 +21,7 @@ internal class ParagraphMapper {
             val type = rawParagraphs.substring(prevSeparatorIndex + 1, typeEndIndex)
             val textEndIndex = rawParagraphs.indexOf(PARAGRAPH_END, typeEndIndex)
             val text = rawParagraphs.substring(typeEndIndex + 1, textEndIndex)
-            val mappedType = when(type) {
+            val mappedType = when (type) {
                 PARAGRAPH_PRIMARY_HEADER -> ParagraphType.PRIMARY_HEADER
                 PARAGRAPH_SECONDARY_HEADER -> ParagraphType.SECONDARY_HEADER
                 PARAGRAPH_TEXT -> ParagraphType.TEXT
@@ -44,7 +43,7 @@ internal class ParagraphMapper {
     fun mapToString(paragraphs: List<Paragraph>): String {
         return buildString {
             paragraphs.forEach {
-                val mappedType = when(it.type) {
+                val mappedType = when (it.type) {
                     ParagraphType.PRIMARY_HEADER -> PARAGRAPH_PRIMARY_HEADER
                     ParagraphType.SECONDARY_HEADER -> PARAGRAPH_SECONDARY_HEADER
                     ParagraphType.TEXT -> PARAGRAPH_TEXT

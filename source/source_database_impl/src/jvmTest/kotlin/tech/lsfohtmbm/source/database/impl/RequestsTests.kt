@@ -28,7 +28,7 @@ class RequestsTests {
         }
 
         val extractedArticlesIds = database.articlesQueries
-            .getPreview { id, _, _ -> id}
+            .getPreview { id, _, _ -> id }
             .executeAsList()
 
         val sortedIds = extractedArticlesIds.sortedByDescending { it }
@@ -101,7 +101,6 @@ class RequestsTests {
     private fun createTestDatabase(): Database {
         return createDatabase(createTestDriver())
     }
-
 
     private fun createTestDriver(): JdbcSqliteDriver {
         return JdbcSqliteDriver(

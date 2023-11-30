@@ -1,8 +1,7 @@
 package tech.lsfohtmbm.source.database.impl.mapper
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import tech.lsfohtmbm.entity.storage.DateWrapper
 
 private const val DAY = 11

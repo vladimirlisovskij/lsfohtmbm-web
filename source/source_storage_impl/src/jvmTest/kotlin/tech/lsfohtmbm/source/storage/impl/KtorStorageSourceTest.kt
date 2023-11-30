@@ -1,18 +1,31 @@
 package tech.lsfohtmbm.source.storage.impl
 
-import io.ktor.client.engine.mock.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.util.*
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockRequestHandleScope
+import io.ktor.client.engine.mock.respond
+import io.ktor.client.engine.mock.respondBadRequest
+import io.ktor.client.engine.mock.respondOk
+import io.ktor.client.request.HttpRequestData
+import io.ktor.client.request.HttpResponseData
+import io.ktor.client.request.forms.FormDataContent
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.Url
+import io.ktor.http.content.TextContent
+import io.ktor.http.headersOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import tech.lsfohtmbm.api.storage.StorageApi
-import tech.lsfohtmbm.entity.storage.*
+import tech.lsfohtmbm.entity.storage.Article
+import tech.lsfohtmbm.entity.storage.ArticlePreview
+import tech.lsfohtmbm.entity.storage.DateWrapper
+import tech.lsfohtmbm.entity.storage.InsertionResult
+import tech.lsfohtmbm.entity.storage.Previews
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -225,7 +238,7 @@ class KtorStorageSourceTest {
         val image = runBlocking { source.getArticleImage(IMAGE_ID) }
         assertNotNull(image)
         val isImageSame = image
-            .mapIndexed { index, byte -> mockImage[index] == byte  }
+            .mapIndexed { index, byte -> mockImage[index] == byte }
             .all { it }
 
         assert(isImageSame)
@@ -248,6 +261,6 @@ class KtorStorageSourceTest {
     }
 
     private fun Url.toStringWithoutQuery(): String {
-        return "${protocol.name}://${host}:${port}${pathSegments.joinToString("/")}"
+        return "${protocol.name}://$host:${port}${pathSegments.joinToString("/")}"
     }
 }

@@ -2,7 +2,6 @@ package tech.lsfohtmbm.source.database.impl.mapper
 
 import tech.lsfohtmbm.entity.storage.DateWrapper
 
-
 private const val SHIFT_DAY = 0
 private const val SHIFT_MONTH = SHIFT_DAY + 5
 private const val SHIFT_YEAR = SHIFT_MONTH + 4

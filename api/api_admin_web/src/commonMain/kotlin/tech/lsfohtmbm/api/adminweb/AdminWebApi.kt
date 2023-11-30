@@ -1,6 +1,5 @@
 package tech.lsfohtmbm.api.adminweb
 
-
 object AdminWebApi {
     const val ENDPOINT_PREVIEWS = "previews"
     const val ENDPOINT_ARTICLE = "article"

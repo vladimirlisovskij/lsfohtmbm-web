@@ -10,7 +10,6 @@ import tech.lsfohtmbm.source.database.impl.database.Database
 import tech.lsfohtmbm.source.database.impl.mapper.DateMapper
 import tech.lsfohtmbm.source.database.impl.mapper.ParagraphMapper
 
-
 internal class SqlDelightDataBaseSource(
     private val ioDispatcher: CoroutineDispatcher,
     private val database: Database,

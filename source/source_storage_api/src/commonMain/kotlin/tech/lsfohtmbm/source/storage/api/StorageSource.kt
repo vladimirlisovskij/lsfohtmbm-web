@@ -13,5 +13,5 @@ interface StorageSource {
 
     suspend fun insertArticle(article: Article): InsertionResult?
 
-    suspend fun getArticleImage(id: Long) : ByteArray?
+    suspend fun getArticleImage(id: Long): ByteArray?
 }

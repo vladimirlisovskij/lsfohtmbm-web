@@ -5,7 +5,7 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.PluginManager
 import org.gradle.kotlin.dsl.getByType
 
-internal const val JDK_VERSION = 11
+internal const val JDK_VERSION = 8
 
 internal val Project.libs
     get() = extensions

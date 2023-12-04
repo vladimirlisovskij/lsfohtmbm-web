@@ -2,12 +2,10 @@ package tech.lsfohtmbm.source.database.impl
 
 import app.cash.sqldelight.ExecutableQuery
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import tech.lsfohtmbm.source.database.impl.database.ArticlesQueries
 import tech.lsfohtmbm.source.database.impl.database.Database
-import kotlin.properties.Delegates
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -22,15 +20,9 @@ private const val UPDATED_NAME = "UPDATED_NAME"
 private const val UPDATED_TEXT = "UPDATED_TEXT"
 
 class RequestsTests {
-    private var database by Delegates.notNull<Database>()
-
-    @BeforeEach
-    fun initEmptyDatabase() {
-        database = createTestDatabase()
-    }
-
     @Test
     fun `previews sorting`() {
+        val database = createTestDatabase()
         repeat(3) {
             database
                 .articlesQueries
@@ -48,6 +40,7 @@ class RequestsTests {
 
     @Test
     fun `insertion and extraction`() {
+        val database = createTestDatabase()
         val insertedArticleId = database.articlesQueries
             .insertMockArticle()
             .executeAsOne()
@@ -83,6 +76,7 @@ class RequestsTests {
 
     @Test
     fun deletion() {
+        val database = createTestDatabase()
         val insertedArticleId = database.articlesQueries
             .insertMockArticle()
             .executeAsOne()

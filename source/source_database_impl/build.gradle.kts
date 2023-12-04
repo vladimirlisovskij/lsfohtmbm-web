@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("build_logic.kotlin.jvm")
     alias(libs.plugins.sqldelight)
-    id("build_logic.detekt")
+    id("build_logic.kotlin.detekt")
 }
 
 kotlin {

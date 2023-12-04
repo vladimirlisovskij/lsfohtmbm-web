@@ -1,3 +1,5 @@
+rootProject.name = "build_logic"
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -18,4 +20,4 @@ dependencyResolutionManagement {
     }
 }
 
-include(":detekt")
+include(":kotlin")

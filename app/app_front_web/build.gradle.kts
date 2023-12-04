@@ -1,7 +1,7 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
+    id("build_logic.kotlin.jvm")
+    id("build_logic.kotlin.detekt")
     application
-    id("build_logic.detekt")
 }
 
 kotlin {

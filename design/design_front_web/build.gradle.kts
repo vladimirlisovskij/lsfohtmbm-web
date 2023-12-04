@@ -1,11 +1,9 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    id("build_logic.detekt")
+    id("build_logic.kotlin.jvm")
+    id("build_logic.kotlin.detekt")
 }
 
 kotlin {
-    jvm()
-
     sourceSets {
         val jvmMain by getting {
             dependencies {

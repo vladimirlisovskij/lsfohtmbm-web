@@ -1,4 +1,4 @@
-FROM amazoncorretto:21-alpine-jdk
+FROM amazoncorretto:11
 ARG dist_path
 ARG entrypoint_name
 COPY ${dist_path} /app

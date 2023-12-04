@@ -11,7 +11,7 @@ data class Article(
 )
 
 @Serializable
-class Paragraph(
+data class Paragraph(
     val type: ParagraphType,
     val value: String
 )

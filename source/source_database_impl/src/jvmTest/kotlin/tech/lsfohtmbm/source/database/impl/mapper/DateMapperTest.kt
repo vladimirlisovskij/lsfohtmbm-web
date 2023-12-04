@@ -1,8 +1,9 @@
 package tech.lsfohtmbm.source.database.impl.mapper
 
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import tech.lsfohtmbm.entity.storage.DateWrapper
+import kotlin.test.assertEquals
 
 private const val DAY = 11
 private const val MONTH = 5
@@ -16,9 +17,12 @@ class DateMapperTest {
     @Test
     fun mapToDateWrapper() {
         val mappedDate = mapper.mapToDateWrapper(RAW_DATE)
-        assertEquals(DAY, mappedDate.day)
-        assertEquals(MONTH, mappedDate.month)
-        assertEquals(YEAR, mappedDate.year)
+        assertAll(
+            "object fields",
+            { assertEquals(DAY, mappedDate.day) },
+            { assertEquals(MONTH, mappedDate.month) },
+            { assertEquals(YEAR, mappedDate.year) }
+        )
     }
 
     @Test

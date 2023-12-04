@@ -18,14 +18,17 @@ import io.ktor.http.headersOf
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import tech.lsfohtmbm.api.storage.StorageApi
 import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.ArticlePreview
 import tech.lsfohtmbm.entity.storage.DateWrapper
 import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
+import tech.lsfohtmbm.utils.tests.ktor.assertContentTypes
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -55,17 +58,20 @@ class KtorStorageSourceTest {
 
     @Test
     fun testArticlePreviewsParams() {
-        var handledRequest: HttpRequestData? = null
+        var lastRequest: HttpRequestData? = null
         val source = mockSource { request ->
-            handledRequest = request
+            lastRequest = request
             respondBadRequest()
         }
 
-        val response = runBlocking { source.getArticlePreviews() }
+        runBlocking { source.getArticlePreviews() }
+        val handledRequest = lastRequest
         assertNotNull(handledRequest)
-        assertEquals(URL_PREVIEWS, handledRequest!!.url.toStringWithoutQuery())
-        assertEquals(HttpMethod.Get, handledRequest!!.method)
-        assertNull(response)
+        assertAll(
+            "request structure",
+            { assertEquals(URL_PREVIEWS, handledRequest.url.toStringWithoutQuery()) },
+            { assertEquals(HttpMethod.Get, handledRequest.method) }
+        )
     }
 
     @Test
@@ -99,18 +105,24 @@ class KtorStorageSourceTest {
 
     @Test
     fun testArticleParams() {
-        var handledRequest: HttpRequestData? = null
+        var lastRequest: HttpRequestData? = null
         val source = mockSource { request ->
-            handledRequest = request
+            lastRequest = request
             respondBadRequest()
         }
 
         runBlocking { source.getArticle(ARTICLE_ID) }
+        val handledRequest = lastRequest
         assertNotNull(handledRequest)
-        assertEquals(URL_ARTICLE, handledRequest!!.url.toStringWithoutQuery())
-        assertEquals(HttpMethod.Get, handledRequest!!.method)
-        val articleId = handledRequest!!.url.parameters[StorageApi.PARAM_ID]?.toLongOrNull()
-        assertEquals(ARTICLE_ID, articleId)
+        assertAll(
+            "request structure",
+            { assertEquals(URL_ARTICLE, handledRequest.url.toStringWithoutQuery()) },
+            { assertEquals(HttpMethod.Get, handledRequest.method) },
+            {
+                val articleId = handledRequest.url.parameters[StorageApi.PARAM_ID]?.toLongOrNull()
+                assertEquals(ARTICLE_ID, articleId)
+            }
+        )
     }
 
     @Test
@@ -138,19 +150,26 @@ class KtorStorageSourceTest {
 
     @Test
     fun testDeleteArticleParams() {
-        var handledRequest: HttpRequestData? = null
+        var lastRequest: HttpRequestData? = null
         val source = mockSource { request ->
-            handledRequest = request
+            lastRequest = request
             respondBadRequest()
         }
 
         runBlocking { source.deleteArticle(ARTICLE_ID) }
+        val handledRequest = lastRequest
         assertNotNull(handledRequest)
-        assertEquals(URL_DELETE, handledRequest!!.url.toStringWithoutQuery())
-        assertEquals(HttpMethod.Post, handledRequest!!.method)
-        assert(handledRequest!!.body.contentType!!.match(ContentType.Application.FormUrlEncoded))
-        val formBody = handledRequest!!.body as FormDataContent
-        assertEquals(ARTICLE_ID, formBody.formData[StorageApi.PARAM_ID]?.toLongOrNull())
+        assertAll(
+            "request structure",
+            { assertEquals(URL_DELETE, handledRequest.url.toStringWithoutQuery()) },
+            { assertEquals(HttpMethod.Post, handledRequest.method) },
+            {
+                val contentType = handledRequest.body.contentType!!
+                assertContentTypes(ContentType.Application.FormUrlEncoded, contentType)
+                val formBody = handledRequest.body as FormDataContent
+                assertEquals(ARTICLE_ID, formBody.formData[StorageApi.PARAM_ID]?.toLongOrNull())
+            }
+        )
     }
 
     @Test
@@ -169,19 +188,26 @@ class KtorStorageSourceTest {
 
     @Test
     fun testInsertArticleParams() {
-        var handledRequest: HttpRequestData? = null
+        var lastRequest: HttpRequestData? = null
         val source = mockSource { request ->
-            handledRequest = request
+            lastRequest = request
             respondBadRequest()
         }
 
         runBlocking { source.insertArticle(mockArticle) }
+        val handledRequest = lastRequest
         assertNotNull(handledRequest)
-        assertEquals(URL_INSERT, handledRequest!!.url.toStringWithoutQuery())
-        assertEquals(HttpMethod.Post, handledRequest!!.method)
-        assert(handledRequest!!.body.contentType!!.match(ContentType.Application.Json))
-        val textBody = handledRequest!!.body as TextContent
-        assertEquals(mockArticle, Json.decodeFromString<Article>(textBody.text))
+        assertAll(
+            "request structure",
+            { assertEquals(URL_INSERT, handledRequest.url.toStringWithoutQuery()) },
+            { assertEquals(HttpMethod.Post, handledRequest.method) },
+            {
+                val contentType = handledRequest.body.contentType!!
+                assertContentTypes(ContentType.Application.Json, contentType)
+                val textBody = handledRequest.body as TextContent
+                assertEquals(mockArticle, Json.decodeFromString<Article>(textBody.text))
+            }
+        )
     }
 
     @Test
@@ -212,17 +238,21 @@ class KtorStorageSourceTest {
 
     @Test
     fun testArticleImageParams() {
-        var handledRequest: HttpRequestData? = null
+        var lastRequest: HttpRequestData? = null
         val source = mockSource { request ->
-            handledRequest = request
+            lastRequest = request
             respondBadRequest()
         }
 
         runBlocking { source.getArticleImage(IMAGE_ID) }
+        val handledRequest = lastRequest
         assertNotNull(handledRequest)
-        assertEquals(URL_IMAGE, handledRequest!!.url.toStringWithoutQuery())
-        assertEquals(HttpMethod.Get, handledRequest!!.method)
-        assertEquals(IMAGE_ID, handledRequest!!.url.parameters[StorageApi.PARAM_ID]?.toLongOrNull())
+        assertAll(
+            "request structure",
+            { assertEquals(URL_IMAGE, handledRequest.url.toStringWithoutQuery()) },
+            { assertEquals(HttpMethod.Get, handledRequest.method) },
+            { assertEquals(IMAGE_ID, handledRequest.url.parameters[StorageApi.PARAM_ID]?.toLongOrNull()) }
+        )
     }
 
     @Test
@@ -237,11 +267,7 @@ class KtorStorageSourceTest {
 
         val image = runBlocking { source.getArticleImage(IMAGE_ID) }
         assertNotNull(image)
-        val isImageSame = image
-            .mapIndexed { index, byte -> mockImage[index] == byte }
-            .all { it }
-
-        assert(isImageSame)
+        assertContentEquals(mockImage, image)
     }
 
     @Test

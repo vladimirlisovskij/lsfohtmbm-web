@@ -47,3 +47,4 @@ include(":source:source_admin_impl")
 
 include(":utils:utils_app")
 include(":utils:utils_coroutines")
+include(":utils:utils_tests")

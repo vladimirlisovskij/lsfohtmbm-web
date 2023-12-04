@@ -12,12 +12,12 @@ class Jvm : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             addKotlinMultiplatform(pluginManager)
-            kotlinExtension.jvmToolchain(JDK_VERSION)
-            tasks.withType(KotlinCompile::class.java) {
-                compilerOptions {
-                    jvmTarget.set(JvmTarget.fromTarget(JDK_VERSION.toString()))
-                }
-            }
+//            kotlinExtension.jvmToolchain(JDK_VERSION)
+//            tasks.withType(KotlinCompile::class.java) {
+//                compilerOptions {
+//                    jvmTarget.set(JvmTarget.fromTarget(JDK_VERSION.toString()))
+//                }
+//            }
         }
     }
 }

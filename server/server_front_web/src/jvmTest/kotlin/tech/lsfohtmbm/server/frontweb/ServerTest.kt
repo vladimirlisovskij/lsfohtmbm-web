@@ -7,8 +7,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import kotlinx.html.HTML
-import kotlinx.html.html
-import kotlinx.html.stream.appendHTML
 import kotlinx.html.unsafe
 import org.junit.jupiter.api.Test
 import tech.lsfohtmbm.entity.storage.Article
@@ -17,6 +15,8 @@ import tech.lsfohtmbm.entity.storage.DateWrapper
 import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.storage.api.StorageSource
+import tech.lsfohtmbm.utils.tests.ktor.mockHtml
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 private const val HOST = "192.168.0.1"
@@ -55,7 +55,7 @@ class ServerTest {
         AVAILABLE_ARTICLE_ID,
         "$AVAILABLE_ARTICLE_ID",
         DateWrapper(1, 2, 3),
-        listOf()
+        emptyList()
     )
 
     private val availableImage = byteArrayOf(1, 2, 3)
@@ -124,11 +124,10 @@ class ServerTest {
 
     @Test
     fun testImage() = testEnvironmentApplication {
-        val image = client.get("$HTTP_BASE_URL/image/$AVAILABLE_IMAGE_ID")
-        assertEquals(HttpStatusCode.OK, image.status)
-        val imageBody = image.readBytes()
-        assertEquals(availableImage.size, imageBody.size)
-        assert(availableImage.mapIndexed { index, byte -> imageBody[index] == byte }.all { it })
+        val response = client.get("$HTTP_BASE_URL/image/$AVAILABLE_IMAGE_ID")
+        assertEquals(HttpStatusCode.OK, response.status)
+        val receivedImage = response.readBytes()
+        assertContentEquals(availableImage, receivedImage)
     }
 
     @Test
@@ -181,14 +180,6 @@ class ServerTest {
 
     private fun HTML.mockArticleRenderer(article: Article) {
         unsafe { +article.toString() }
-    }
-
-    /**
-     * copy-paste from ktor implementation
-     */
-    private fun mockHtml(block: HTML.() -> Unit) = buildString {
-        append("<!DOCTYPE html>\n")
-        appendHTML().html(block = block)
     }
 
     private class MockStorageSource(

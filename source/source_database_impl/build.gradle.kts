@@ -28,6 +28,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(projects.utils.utilsTests)
             }
         }
     }

@@ -72,10 +72,6 @@ complexity:
   LongMethod:
     active: true
     threshold: 60
-  NamedArguments:
-    active: true
-    threshold: 2
-    ignoreArgumentsMatchingNames: false
   NestedBlockDepth:
     active: true
     threshold: 4
@@ -97,6 +93,8 @@ complexity:
   StringLiteralDuplication:
     active: false
   TooManyFunctions:
+    active: false
+  NamedArguments:
     active: false
 
 coroutines:

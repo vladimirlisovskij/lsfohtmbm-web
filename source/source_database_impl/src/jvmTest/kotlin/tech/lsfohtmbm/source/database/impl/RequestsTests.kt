@@ -3,8 +3,10 @@ package tech.lsfohtmbm.source.database.impl
 import app.cash.sqldelight.ExecutableQuery
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import tech.lsfohtmbm.source.database.impl.database.ArticlesQueries
 import tech.lsfohtmbm.source.database.impl.database.Database
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -19,10 +21,11 @@ private const val UPDATED_TEXT = "UPDATED_TEXT"
 
 class RequestsTests {
     @Test
-    fun testPreviewsSorting() {
+    fun `previews sorting`() {
         val database = createTestDatabase()
         repeat(3) {
-            database.articlesQueries
+            database
+                .articlesQueries
                 .insertMockArticle(date = it.toLong())
                 .executeAsOne()
         }
@@ -32,15 +35,11 @@ class RequestsTests {
             .executeAsList()
 
         val sortedIds = extractedArticlesIds.sortedByDescending { it }
-        val isListEquals = sortedIds
-            .mapIndexed { index, id -> id == extractedArticlesIds[index] }
-            .all { it }
-
-        assert(isListEquals)
+        assertContentEquals(sortedIds, extractedArticlesIds)
     }
 
     @Test
-    fun testInsertionAndExtraction() {
+    fun `insertion and extraction`() {
         val database = createTestDatabase()
         val insertedArticleId = database.articlesQueries
             .insertMockArticle()
@@ -50,9 +49,12 @@ class RequestsTests {
             .get(insertedArticleId)
             .executeAsOne()
 
-        assertEquals(MOCK_DATE, extractedArticle.date)
-        assertEquals(MOCK_TEXT, extractedArticle.text)
-        assertEquals(MOCK_NAME, extractedArticle.name)
+        assertAll(
+            "inserted entry properties",
+            { assertEquals(MOCK_DATE, extractedArticle.date) },
+            { assertEquals(MOCK_TEXT, extractedArticle.text) },
+            { assertEquals(MOCK_NAME, extractedArticle.name) }
+        )
 
         val updatedArticleId = database.articlesQueries
             .insertMockArticle(insertedArticleId, UPDATED_DATE, UPDATED_NAME, UPDATED_TEXT)
@@ -64,13 +66,16 @@ class RequestsTests {
             .get(updatedArticleId)
             .executeAsOne()
 
-        assertEquals(UPDATED_DATE, extractedUpdatedArticle.date)
-        assertEquals(UPDATED_TEXT, extractedUpdatedArticle.text)
-        assertEquals(UPDATED_NAME, extractedUpdatedArticle.name)
+        assertAll(
+            "updated entry properties",
+            { assertEquals(UPDATED_DATE, extractedUpdatedArticle.date) },
+            { assertEquals(UPDATED_TEXT, extractedUpdatedArticle.text) },
+            { assertEquals(UPDATED_NAME, extractedUpdatedArticle.name) }
+        )
     }
 
     @Test
-    fun testDeletion() {
+    fun deletion() {
         val database = createTestDatabase()
         val insertedArticleId = database.articlesQueries
             .insertMockArticle()

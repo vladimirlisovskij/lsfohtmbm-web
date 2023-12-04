@@ -16,32 +16,33 @@ import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.storage.api.StorageSource
-import tech.lsfohtmbm.utils.coroutines.cancellableRunCatching
+import tech.lsfohtmbm.utils.coroutines.cancellableGetOrDefault
+import tech.lsfohtmbm.utils.coroutines.cancellableGetOrNull
 
 internal class KtorStorageSource(
     private val client: HttpClient,
     private val baseUrl: String
 ) : StorageSource {
     override suspend fun getArticlePreviews(): Previews? {
-        return cancellableRunCatching {
+        return runCatching {
             client
                 .get("$baseUrl/${StorageApi.ENDPOINT_PREVIEWS}")
                 .body<Previews>()
-        }.getOrNull()
+        }.cancellableGetOrNull()
     }
 
     override suspend fun getArticle(id: Long): Article? {
-        return cancellableRunCatching {
+        return runCatching {
             client
                 .get("$baseUrl/${StorageApi.ENDPOINT_ARTICLE}") {
                     url.parameters.append("id", id.toString())
                 }
                 .body<Article>()
-        }.getOrNull()
+        }.cancellableGetOrNull()
     }
 
     override suspend fun deleteArticle(id: Long): Boolean {
-        return cancellableRunCatching {
+        return runCatching {
             client.post("$baseUrl/${StorageApi.ENDPOINT_DELETE}") {
                 setBody(
                     FormDataContent(
@@ -49,16 +50,16 @@ internal class KtorStorageSource(
                     )
                 )
             }.status.isSuccess()
-        }.getOrDefault(false)
+        }.cancellableGetOrDefault(false)
     }
 
     override suspend fun insertArticle(article: Article): InsertionResult? {
-        return cancellableRunCatching {
+        return runCatching {
             client.post("$baseUrl/${StorageApi.ENDPOINT_INSERT}") {
                 setBody(article)
                 contentType(ContentType.Application.Json)
             }.body<InsertionResult>()
-        }.getOrNull()
+        }.cancellableGetOrNull()
     }
 
     override suspend fun getArticleImage(id: Long): ByteArray? {

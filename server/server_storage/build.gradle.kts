@@ -33,7 +33,10 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation(projects.utils.utilsTests)
                 implementation(libs.ktor.server.test)
+                implementation(libs.ktor.client.contentNegotiation.core)
+                implementation(libs.ktor.client.contentNegotiation.json)
             }
         }
     }

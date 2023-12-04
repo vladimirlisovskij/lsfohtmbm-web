@@ -16,32 +16,33 @@ import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.InsertionResult
 import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.admin.api.AdminSource
-import tech.lsfohtmbm.utils.coroutines.cancellableRunCatching
+import tech.lsfohtmbm.utils.coroutines.cancellableGetOrDefault
+import tech.lsfohtmbm.utils.coroutines.cancellableGetOrNull
 
 class KtorAdminSource(
     private val httpClient: HttpClient,
     private val baseUrl: String
 ) : AdminSource {
     override suspend fun getPreviews(): Previews? {
-        return cancellableRunCatching {
+        return runCatching {
             httpClient
                 .get("$baseUrl/${AdminWebApi.ENDPOINT_PREVIEWS}")
                 .body<Previews>()
-        }.getOrNull()
+        }.cancellableGetOrNull()
     }
 
     override suspend fun getArticle(id: Long): Article? {
-        return cancellableRunCatching {
+        return runCatching {
             httpClient
                 .get("$baseUrl/${AdminWebApi.ENDPOINT_ARTICLE}") {
                     parameter(AdminWebApi.PARAM_ID, id.toString())
                 }
                 .body<Article>()
-        }.getOrNull()
+        }.cancellableGetOrNull()
     }
 
     override suspend fun delete(id: Long): Boolean {
-        return cancellableRunCatching {
+        return runCatching {
             val response = httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_DELETE}") {
                 setBody(
                     FormDataContent(
@@ -51,15 +52,15 @@ class KtorAdminSource(
             }
 
             response.status.isSuccess()
-        }.getOrDefault(false)
+        }.cancellableGetOrDefault(false)
     }
 
     override suspend fun insert(article: Article): InsertionResult? {
-        return cancellableRunCatching {
+        return runCatching {
             httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_INSERT}") {
                 setBody(article)
                 contentType(ContentType.Application.Json)
             }.body<InsertionResult>()
-        }.getOrNull()
+        }.cancellableGetOrNull()
     }
 }

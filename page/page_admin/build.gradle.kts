@@ -1,13 +1,12 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    id("build_logic.detekt")
+    id("build_logic.kotlin.jvm")
+    id("build_logic.kotlin.js_browser")
+    id("build_logic.kotlin.detekt")
 }
 
 kotlin {
-    jvm()
     js(IR) {
         binaries.executable()
-        browser()
     }
 
     sourceSets {

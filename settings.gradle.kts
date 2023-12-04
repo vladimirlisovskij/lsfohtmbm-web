@@ -1,3 +1,5 @@
+rootProject.name = "blog"
+
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -15,7 +17,9 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "blog"
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version("0.5.0")
+}
 
 include(":app:app_front_web")
 include(":app:app_admin_web")

@@ -1,11 +1,10 @@
 plugins {
-    alias(libs.plugins.kotlin.multiplatform)
-    id("build_logic.detekt")
+    id("build_logic.kotlin.jvm")
+    id("build_logic.kotlin.js_browser")
+    id("build_logic.kotlin.detekt")
 }
 
 kotlin {
-    js(IR) { browser() }
-
     sourceSets {
         val commonMain by getting {
             dependencies {

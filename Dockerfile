@@ -1,4 +1,4 @@
-FROM amazoncorretto:17
+FROM amazoncorretto:21
 ARG dist_path
 ARG entrypoint_name
 COPY ${dist_path} /app

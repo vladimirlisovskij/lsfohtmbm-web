@@ -1,5 +1,5 @@
 [versions]
-kotlin-core = "1.9.21"
+kotlin-core = "1.9.22"
 kotlin-html = "0.10.1"
 kotlin-react = "18.2.0-pre.659"
 kotlin-coroutines = "1.7.3"

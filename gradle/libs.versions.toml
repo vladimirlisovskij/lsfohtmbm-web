@@ -1,7 +1,7 @@
 [versions]
 kotlin-core = "1.9.21"
 kotlin-html = "0.10.1"
-kotlin-react = "18.2.0-pre.659"
+kotlin-react = "18.2.0-pre.703"
 kotlin-coroutines = "1.7.3"
 kotlin-serialization = "1.6.2"
 ktor = "2.3.6"

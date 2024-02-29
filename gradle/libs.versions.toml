@@ -5,7 +5,7 @@ kotlin-react = "18.2.0-pre.659"
 kotlin-coroutines = "1.7.3"
 kotlin-serialization = "1.6.2"
 ktor = "2.3.6"
-logback = "1.4.14"
+logback = "1.5.1"
 sqldelight = "2.0.1"
 detekt = "1.23.4"
 

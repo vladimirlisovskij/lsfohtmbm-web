@@ -111,7 +111,8 @@ private fun Article.toUiModel(): ArticleModel {
         id = id,
         date = Date(date.year, date.month, date.day).toUiValue(),
         title = title,
-        fields = paragraphs.map { ParagraphModel(it.type.name, it.value) }
+        fields = paragraphs.map { ParagraphModel(it.type.name, it.value) },
+        ready = ready
     )
 }
 
@@ -120,7 +121,8 @@ private fun emptyArticleModel(): ArticleModel {
         null,
         currentDate(),
         "",
-        emptyList()
+        emptyList(),
+        false
     )
 }
 
@@ -162,7 +164,8 @@ private fun ArticleModel.toDomainModel(): Article? {
         id = id ?: -1,
         title = title,
         date = dateWrapper,
-        paragraphs = paragraph
+        paragraphs = paragraph,
+        ready = ready
     )
 }
 
@@ -241,6 +244,11 @@ private fun ChildrenBuilder.editor(
             }
         )
     }
+
+    readyButton(
+        ready = article.ready,
+        onCheck = { onArticleChanged(article.copy(ready = it)) }
+    )
 
     saveButton(
         isValidationError = isValidationError,
@@ -324,6 +332,20 @@ private fun ChildrenBuilder.articleRow(
     }
 }
 
+private fun ChildrenBuilder.readyButton(
+    ready: Boolean,
+    onCheck: (Boolean) -> Unit
+) {
+    div {
+        input {
+            + "Готов"
+            type = InputType.checkbox
+            checked = ready
+//            onClick = { onCheck(!ready) }
+        }
+    }
+}
+
 private fun ChildrenBuilder.saveButton(
     isValidationError: Boolean,
     isRequestError: Boolean,
@@ -361,7 +383,8 @@ private data class ArticleModel(
     val id: Long?,
     val date: String,
     val title: String,
-    val fields: List<ParagraphModel>
+    val fields: List<ParagraphModel>,
+    val ready: Boolean
 )
 
 private data class ParagraphModel(

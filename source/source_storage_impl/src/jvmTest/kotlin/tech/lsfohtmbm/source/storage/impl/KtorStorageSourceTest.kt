@@ -25,7 +25,7 @@ import tech.lsfohtmbm.entity.storage.Article
 import tech.lsfohtmbm.entity.storage.ArticlePreview
 import tech.lsfohtmbm.entity.storage.DateWrapper
 import tech.lsfohtmbm.entity.storage.InsertionResult
-import tech.lsfohtmbm.entity.storage.Previews
+import tech.lsfohtmbm.entity.storage.ArticlePreviews
 import tech.lsfohtmbm.utils.tests.ktor.assertContentTypes
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
@@ -76,7 +76,7 @@ class KtorStorageSourceTest {
 
     @Test
     fun testArticlesPreviewsSuccess() {
-        val previews = Previews(
+        val articlePreviews = ArticlePreviews(
             listOf(
                 ArticlePreview(-1, "", DateWrapper(0, 0, 0))
             )
@@ -84,7 +84,7 @@ class KtorStorageSourceTest {
 
         val source = mockSource {
             respond(
-                content = Json.encodeToString(previews),
+                content = Json.encodeToString(articlePreviews),
                 status = HttpStatusCode.OK,
                 headers = headersOf(HttpHeaders.ContentType, CONTENT_JSON)
             )
@@ -92,8 +92,8 @@ class KtorStorageSourceTest {
 
         val response = runBlocking { source.getArticlePreviews() }
         assertNotNull(response)
-        assertEquals(previews.previews.size, response.previews.size)
-        assertEquals(previews.previews.first(), response.previews.first())
+        assertEquals(articlePreviews.previews.size, response.previews.size)
+        assertEquals(articlePreviews.previews.first(), response.previews.first())
     }
 
     @Test

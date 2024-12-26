@@ -43,7 +43,7 @@ class KtorAdminSource(
 
     override suspend fun delete(id: Long): Boolean {
         return runCatching {
-            val response = httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_DELETE}") {
+            val response = httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_ARTICLE}") {
                 setBody(
                     FormDataContent(
                         parametersOf(AdminWebApi.PARAM_ID, id.toString())
@@ -57,7 +57,7 @@ class KtorAdminSource(
 
     override suspend fun insert(article: Article): InsertionResult? {
         return runCatching {
-            httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_INSERT}") {
+            httpClient.post("$baseUrl/${AdminWebApi.ENDPOINT_ARTICLE}") {
                 setBody(article)
                 contentType(ContentType.Application.Json)
             }.body<InsertionResult>()

@@ -1,17 +1,31 @@
-get:
+insertArticle:
+INSERT OR REPLACE INTO articles(id, name, date, text, ready)
+VALUES (?, ?, ?, ?, ?)
+RETURNING id;
+
+getFinishedArticle:
 SELECT date, name, text FROM articles
+WHERE id = ? AND ready = 1
+LIMIT 1;
+
+getArticle:
+SELECT date, name, text, ready FROM articles
 WHERE id = ?
 LIMIT 1;
 
-getPreview:
+isAricleExist:
+SELECT EXISTS(SELECT 1 FROM articles WHERE id = ? LIMIT 1);
+
+getFinishedPreviews:
 SELECT id, date, name FROM articles
 ORDER BY date DESC;
 
-delete:
-DELETE FROM articles
-WHERE id = ?;
+getPreviews:
+SELECT id, date, name, ready FROM articles
+ORDER BY date DESC;
 
-insert:
-INSERT OR REPLACE INTO articles
-VALUES (?, ?, ?, ?)
-RETURNING id;
+deleteArticle:
+DELETE FROM articles
+WHERE id = ?
+RETURNING id
+LIMIT 1;

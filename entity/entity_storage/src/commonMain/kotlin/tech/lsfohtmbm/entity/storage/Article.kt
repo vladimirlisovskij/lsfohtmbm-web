@@ -7,20 +7,10 @@ data class Article(
     val id: Long,
     val title: String,
     val date: DateWrapper,
-    val paragraphs: List<Paragraph>
-)
-
-@Serializable
-data class Paragraph(
-    val type: ParagraphType,
-    val value: String
-)
-
-@Serializable
-enum class ParagraphType {
-    PRIMARY_HEADER,
-    SECONDARY_HEADER,
-    TEXT,
-    IMAGE,
-    DESCRIPTION
+    val ready: Boolean,
+    val paragraphs: List<Paragraph>,
+) {
+    companion object {
+        const val NO_ID = -1L
+    }
 }

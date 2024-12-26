@@ -1,12 +1,19 @@
 package tech.lsfohtmbm.source.database.impl
 
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 import tech.lsfohtmbm.entity.storage.Article
-import tech.lsfohtmbm.entity.storage.ArticlePreview
+import tech.lsfohtmbm.entity.storage.Attachment
+import tech.lsfohtmbm.entity.storage.FinishedArticle
+import tech.lsfohtmbm.entity.storage.FinishedPreview
+import tech.lsfohtmbm.entity.storage.FinishedPreviews
+import tech.lsfohtmbm.entity.storage.InsertionResult
+import tech.lsfohtmbm.entity.storage.Preview
 import tech.lsfohtmbm.entity.storage.Previews
 import tech.lsfohtmbm.source.database.api.DataBaseSource
 import tech.lsfohtmbm.source.database.impl.database.Database
+import tech.lsfohtmbm.source.database.impl.mapper.BooleanMapper
 import tech.lsfohtmbm.source.database.impl.mapper.DateMapper
 import tech.lsfohtmbm.source.database.impl.mapper.ParagraphMapper
 
@@ -14,59 +21,151 @@ internal class SqlDelightDataBaseSource(
     private val ioDispatcher: CoroutineDispatcher,
     private val database: Database,
     private val paragraphMapper: ParagraphMapper,
-    private val dateMapper: DateMapper
+    private val dateMapper: DateMapper,
+    private val booleanMapper: BooleanMapper
 ) : DataBaseSource {
-    override suspend fun getArticlePreviews(): Previews {
-        return withContext(ioDispatcher) {
+    override suspend fun getFinishedPreviews(): FinishedPreviews {
+        return runInIo {
             database.articlesQueries
-                .getPreview { id, date, title ->
-                    ArticlePreview(
+                .getFinishedPreviews { id, date, title ->
+                    FinishedPreview(
                         id = id,
                         title = title,
                         date = dateMapper.mapToDateWrapper(date)
                     )
-                }
-                .executeAsList()
+                }.executeAsList()
+                .let { FinishedPreviews(it) }
+        }
+    }
+
+    override suspend fun getPreviews(): Previews {
+        return runInIo {
+            database.articlesQueries
+                .getPreviews { id, date, title, ready ->
+                    Preview(
+                        id = id,
+                        date = dateMapper.mapToDateWrapper(date),
+                        title = title,
+                        ready = booleanMapper.mapToBoolean(ready),
+                    )
+                }.executeAsList()
                 .let { Previews(it) }
         }
     }
 
-    override suspend fun getArticle(id: Long): Article? {
-        return withContext(ioDispatcher) {
-            database.articlesQueries.get(id) { date, title, paragraphs ->
-                Article(
-                    id = id,
-                    title = title,
-                    date = dateMapper.mapToDateWrapper(date),
-                    paragraphs = paragraphMapper.mapToParagraphList(paragraphs)
-                )
-            }.executeAsOneOrNull()
+    override suspend fun getFinishedArticle(articleId: Long): FinishedArticle? {
+        return runInIo {
+            database.articlesQueries
+                .getFinishedArticle(articleId) { date, title, paragraphs ->
+                    FinishedArticle(
+                        id = articleId,
+                        title = title,
+                        date = dateMapper.mapToDateWrapper(date),
+                        paragraphs = paragraphMapper.mapToParagraphList(paragraphs),
+                    )
+                }.executeAsOneOrNull()
         }
     }
 
-    override suspend fun deleteArticle(id: Long) {
-        withContext(ioDispatcher) {
-            database.articlesQueries.delete(id)
+    override suspend fun getArticle(articleId: Long): Article? {
+        return runInIo {
+            database.articlesQueries
+                .getArticle(articleId) { date, title, paragraphs, ready ->
+                    Article(
+                        id = articleId,
+                        title = title,
+                        date = dateMapper.mapToDateWrapper(date),
+                        paragraphs = paragraphMapper.mapToParagraphList(paragraphs),
+                        ready = booleanMapper.mapToBoolean(ready)
+                    )
+                }.executeAsOneOrNull()
         }
     }
 
-    override suspend fun insertArticle(article: Article): Long {
-        return withContext(ioDispatcher) {
-            val date = dateMapper.mapToLong(article.date)
-            val paragraphs = paragraphMapper.mapToString(article.paragraphs)
-            val id = if (article.id == -1L) null else article.id
-            database.articlesQueries.insert(
-                id,
-                date,
-                article.title,
-                paragraphs
-            ).executeAsOne()
+    override suspend fun deleteArticle(articleId: Long): Boolean {
+        return runInIo {
+            database.transactionWithResult {
+                database.articlesQueries
+                    .deleteArticle(articleId)
+                    .executeAsOneOrNull() ?: rollback(false)
+
+                database.attachmentsQueries
+                    .deleteArticleAttachments(articleId)
+
+                true
+            }
         }
     }
 
-    override suspend fun getArticleImage(id: Long): ByteArray? {
-        return withContext(ioDispatcher) {
-            database.imagesQueries.get(id).executeAsOneOrNull()
+    override suspend fun insertArticle(article: Article): InsertionResult {
+        return runInIo {
+            database.articlesQueries
+                .insertArticle(
+                    id = article.id.takeIf { it != Article.NO_ID },
+                    name = article.title,
+                    date = dateMapper.mapToLong(article.date),
+                    text = paragraphMapper.mapToString(article.paragraphs),
+                    ready = booleanMapper.mapToLong(article.ready)
+                ).executeAsOne()
+                .let { InsertionResult(it) }
         }
+    }
+
+    override suspend fun getAttachment(attachmentId: Long, forFinishedArticle: Boolean): Attachment? {
+        return runInIo {
+            val queries = database.attachmentsQueries
+            val query = if (forFinishedArticle) {
+                queries.getFinishedAttachment(attachmentId) { attachment, type ->
+                        Attachment(attachment, type)
+                    }
+            } else {
+                queries.getAttachment(attachmentId) { attachment, type ->
+                        Attachment(attachment, type)
+                    }
+            }
+
+            query.executeAsOneOrNull()
+        }
+    }
+
+    override suspend fun insertAttachment(articleId: Long, attachment: Attachment): InsertionResult? {
+        return runInIo {
+            database.transactionWithResult {
+                val isArticleExist = database.articlesQueries
+                    .isAricleExist(articleId)
+                    .executeAsOne()
+
+                if (!isArticleExist) rollback(null)
+                database.attachmentsQueries
+                    .insert(
+                        article = articleId,
+                        attachment = attachment.data,
+                        type = attachment.type
+                    ).executeAsOne()
+                    .let { InsertionResult(it) }
+            }
+        }
+    }
+
+    override suspend fun updateAttachment(id: Long, attachment: Attachment): Boolean {
+        return runInIo {
+            database.attachmentsQueries.update(
+                attachment = attachment.data,
+                type = attachment.type,
+                id = id
+            ).executeAsOneOrNull() != null
+        }
+    }
+
+    override suspend fun deleteAttachment(id: Long): Boolean {
+        return runInIo {
+            database.attachmentsQueries
+                .deleteAttachment(id)
+                .executeAsOneOrNull() != null
+        }
+    }
+    
+    private suspend fun<T> runInIo(block: suspend CoroutineScope.() -> T): T {
+        return withContext(ioDispatcher, block)
     }
 }

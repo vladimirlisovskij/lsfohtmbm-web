@@ -1,10 +1,11 @@
 package tech.lsfohtmbm.api.adminweb
 
 object AdminWebApi {
-    const val ENDPOINT_PREVIEWS = "previews"
-    const val ENDPOINT_ARTICLE = "article"
-    const val ENDPOINT_DELETE = "delete"
-    const val ENDPOINT_INSERT = "insert"
+    private const val SEGMENT_ARTICLES = "articles"
+
+    const val ENDPOINT_ARTICLE = "$SEGMENT_ARTICLES/article"
+    const val ENDPOINT_PREVIEWS = "$SEGMENT_ARTICLES/previews"
+    const val ENDPOINT_ATTACHMENT = "attachment"
 
     const val PARAM_ID = "id"
 }

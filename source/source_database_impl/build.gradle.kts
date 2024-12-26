@@ -21,14 +21,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.sqldelight.sqlite)
-                implementation(libs.kotlin.coroutines)
-            }
-        }
-
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(projects.utils.utilsTests)
+                implementation(libs.kotlin.coroutines.core)
             }
         }
     }

@@ -8,7 +8,7 @@ internal fun createDatabase(driver: SqlDriver): Database {
     return Database(driver)
 }
 
-internal fun createDriver(path: String): SqlDriver {
+internal fun createFileDriver(path: String): SqlDriver {
     return JdbcSqliteDriver(
         url = "jdbc:sqlite:$path",
         schema = Database.Schema

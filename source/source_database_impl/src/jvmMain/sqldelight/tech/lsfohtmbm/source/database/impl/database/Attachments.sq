@@ -1,0 +1,32 @@
+insert:
+INSERT OR REPLACE INTO attachments(article, attachment, type)
+VALUES (?, ?, ?)
+RETURNING id;
+
+update:
+UPDATE attachments SET
+attachment = ?, type = ?
+WHERE id = ?
+RETURNING id
+LIMIT 1;
+
+getFinishedAttachment:
+SELECT attachment, type FROM attachments
+INNER JOIN articles ON attachments.article = articles.id
+WHERE attachments.id = ? AND articles.ready = 1
+LIMIT 1;
+
+getAttachment:
+SELECT attachment, type FROM attachments
+WHERE attachments.id = ?
+LIMIT 1;
+
+deleteAttachment:
+DELETE FROM attachments
+WHERE id = ?
+RETURNING id
+LIMIT 1;
+
+deleteArticleAttachments:
+DELETE FROM attachments
+WHERE article = ?;

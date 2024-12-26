@@ -9,7 +9,7 @@ import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.p
 import react.useEffectOnce
 import react.useState
-import tech.lsfohtmbm.entity.storage.ArticlePreview
+import tech.lsfohtmbm.entity.storage.Preview
 import web.cssom.ClassName
 
 internal val PreviewsFc = FC<PreviewsProps> { props ->
@@ -69,14 +69,14 @@ internal val PreviewsFc = FC<PreviewsProps> { props ->
 }
 
 private fun ChildrenBuilder.preview(
-    preview: ArticlePreview,
+    preview: Preview,
     onArticleClicked: (Long) -> Unit,
     onArticleRemoved: (Long) -> Unit
 ) {
     div {
         className = ClassName("preview")
 
-        +"${preview.date.day}/${preview.date.month}/${preview.date.year} ${preview.title}"
+        +"готов: ${preview.ready} ${preview.date.day}/${preview.date.month}/${preview.date.year} ${preview.title}"
 
         button {
             +"изменить"
@@ -111,5 +111,5 @@ private sealed interface PreviewState {
     data object Loading : PreviewState
     data object Error : PreviewState
 
-    data class Complete(val previews: List<ArticlePreview>) : PreviewState
+    data class Complete(val previews: List<Preview>) : PreviewState
 }

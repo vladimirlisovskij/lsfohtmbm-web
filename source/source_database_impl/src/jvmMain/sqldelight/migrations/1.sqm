@@ -1,13 +1,13 @@
-CREATE TABLE articles_temp (
+ALTER TABLE articles RENAME TO articles_old;
+
+CREATE TABLE articles (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	date INTEGER NOT NULL,
 	name TEXT NOT NULL,
 	text TEXT NOT NULL
 );
 
-INSERT INTO articles_temp
-SELECT * FROM articles;
+INSERT INTO articles
+SELECT * FROM articles_old;
 
-DROP TABLE articles;
-
-ALTER TABLE articles_temp RENAME TO articles;
+DROP TABLE articles_old;

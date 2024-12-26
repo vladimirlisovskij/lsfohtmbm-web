@@ -37,6 +37,7 @@ kotlin {
                 implementation(libs.ktor.server.test)
                 implementation(libs.ktor.client.contentNegotiation.core)
                 implementation(libs.ktor.client.contentNegotiation.json)
+                implementation(libs.mockk)
             }
         }
     }

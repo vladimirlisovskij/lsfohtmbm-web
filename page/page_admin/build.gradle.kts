@@ -23,7 +23,7 @@ kotlin {
                 implementation(projects.source.sourceAdminImpl)
                 implementation(libs.kotlin.react.core)
                 implementation(libs.kotlin.react.dom)
-                implementation(libs.kotlin.coroutines)
+                implementation(libs.kotlin.coroutines.core)
             }
         }
     }
